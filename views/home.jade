@@ -22,6 +22,7 @@ block content
       h1(style="display:inline-block") Bitzo's Chat Room
       div.personInfo.pull-right
         img.img-circle(src="/images/avatar/default.png")
+
         h4 {{personInfo.username}}
         br
         br
@@ -36,7 +37,8 @@ block content
             img.img-circle(src="/images/avatar/default.png")
             div.info
               strong {{x.FName}}
-              button.btn.btn-sm.btn-danger(ng-click="deleteFriend($index, x.friendID)") 删除好友
+              button.btn.btn-sm.btn-danger(ng-click="deleteFriend($index, x.friendID)") 删除好友&nbsp;
+                i.glyphicon.glyphicon-remove
       div.panel.panel-success(style="width:68%;float:left;")
         div.panel-heading
           h4 {{chatInfo.chatStatus}}
@@ -49,7 +51,8 @@ block content
           div.friendInfo
             img.img-rounded(src='/images/avatar/default.png')
             strong {{chatInfo.userName}}
-            button.btn.btn-primary(ng-click="addFriend(chatInfo)" ng-disabled="chatInfo.isFriend") 添加好友
+            button.btn.btn-primary(ng-click="addFriend(chatInfo)" ng-disabled="chatInfo.isFriend") 添加好友&nbsp;
+              i.glyphicon.glyphicon-user
             button.btn.btn-danger(id="matchSatus" ng-disabled="chatInfo.matchStatus" ng-click="startMatch()") {{chatInfo.matchMsg}}
           div.charPerson
             img.img-rounded(src='/images/avatar/default.png')
@@ -57,7 +60,8 @@ block content
             strong {{personInfo.username}}
           div.chatMsg
             textarea.form-control(rows='5' style="resize:none" name='msg' ng-model="message")
-            button.btn.btn-sm.btn-info.pull-right(ng-click="sendMessage(message)" ng-disabled="chatInfo.sendMsg") 发送
+            button.btn.btn-sm.btn-info.pull-right(ng-click="sendMessage(message)" ng-disabled="chatInfo.sendMsg") 发送&nbsp;
+              i.glyphicon.glyphicon-send
 
 
 
