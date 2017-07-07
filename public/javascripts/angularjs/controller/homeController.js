@@ -170,7 +170,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
     // }
 
     // 打开一个WebSocket:
-    var ws = new WebSocket('ws://192.168.199.105:3000?token=' + localStorage.getItem('token'));
+    var ws = new WebSocket('ws://localhost:3000?token=' + localStorage.getItem('token'));
 
     // 响应onmessage事件:
     ws.onmessage = function(msg) {
