@@ -1,8 +1,164 @@
+html {
+  height: auto;
+}
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: auto;
 }
 
 a {
   color: #00B7FF;
+}
+
+#all{
+  margin: 0px auto;
+  width: 860px;
+  height: auto;
+  padding-bottom: 10px;
+  position:relative;
+  min-height:100%;
+}
+
+.formTable{
+  width: 400px;
+  margin: 40px auto;
+}
+
+.footer{
+  position: relative;
+  bottom: -10px;
+  margin: auto auto;
+  width: 90%;
+}
+
+.copyright{
+  width: 480px;
+  margin: auto auto;
+
+}
+
+.copyright p{
+  margin: auto auto;
+  display: inline-block;
+}
+
+.friends {
+  width: 100%;
+  height: auto;
+  margin: 2px;
+  border-bottom: solid 1px #66afe9;
+  padding: 10px;
+}
+
+.friends img {
+  width: 35%;
+  height: 35%;
+  border: 1px solid #66afe9;
+}
+
+.friends .info {
+  width: 60%;
+  height: auto;
+  display: inline-block;
+  padding-left: 20px;
+}
+
+.friends strong {
+  display: inline;
+  width: 60%;
+}
+
+.friends button {
+  position: relative;
+  margin-bottom: -25px;
+}
+
+.personInfo {
+  width: 50%;
+  height: auto;
+}
+
+.personInfo img {
+  width: 72px;
+  height: 72px;
+  border: 1px solid #66afe9;
+  float: right;
+}
+
+.personInfo h4 {
+  float: right;
+  display: block;
+  margin-right: 30px;
+}
+
+.personInfo button {
+  display: block;
+  float: right;
+  margin-right: 30px;
+}
+
+.chatArea {
+
+}
+
+.chatArea img{
+  width: 90px;
+  height: 90px;
+  margin: 30px 35px;
+}
+
+.chatArea strong{
+  width: auto;
+  height: auto;
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.chatArea b{
+  color: #2c2b92;
+}
+
+.chatlog {
+  width: 70%;
+  height: 70%;
+  border: 1px solid #66afe9;
+  float: left;
+}
+
+.friendInfo {
+  width: 30%;
+  height: 60%;
+  border-right: 1px solid #66afe9;
+  border-top: 1px solid #66afe9;
+  float: right;
+}
+
+.friendInfo button {
+  display: block;
+  margin: 10px auto
+}
+
+.charPerson {
+  width: 30%;
+  height: 40%;
+  border-right: 1px solid #66afe9;
+  border-bottom: 1px solid #66afe9;
+  border-top: 1px solid #66afe9;
+  float: right;
+}
+
+.chatMsg {
+  width: 70%;
+  height: 30%;
+  border-bottom: 1px solid #66afe9;
+  border-left: 1px solid #66afe9;
+  border-right: 1px solid #66afe9;
+  float: left;
+}
+
+.log {
+  margin: 2px 5px;
 }

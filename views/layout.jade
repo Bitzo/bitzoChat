@@ -1,7 +1,29 @@
 doctype html
 html
   head
-    title= title
+    title="Bitzo‘s chat Room"
+    meta(charset='utf-8')
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+    link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
+    //link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap-theme.min.css')
+    link(rel='icon', href='/images/favicon.png')
+  body(ng-app='myApp' ng-controller="baseController")
+    div(id="all")
+      block content
+
+      script(src="/bower_components/jquery/dist/jquery.min.js")
+      script(src="/bower_components/angular/angular.js")
+      script(src="/bower_components/angular-route/angular-route.js")
+      script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
+      script(src="/javascripts/angularjs/config/baseconfig.js")
+      script(src="/javascripts/angularjs/controller/userController.js")
+      script(src="/javascripts/angularjs/controller/homeController.js")
+
+
+  div.footer
+      div.copyright
+        p Copyright &copy; 2017 Bitzo's ChatRoom&nbsp&nbsp
+          a(href="chat.bitzo.cn" style="display:inline")="chat.bitzo.cn"
+        p &nbsp&nbspAll Rights Reserved
+
+

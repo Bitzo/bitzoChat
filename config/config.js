@@ -24,7 +24,24 @@ let config = {
         connectionLimit : 100,
         supportBigNumbers : true,
     },
+    // 开发环境下的redis配置
+    redis_prd : {
+        host : '115.159.201.83',
+        port : '6379'
+    },
+    // 上线时的redis配置
+    redis_local : {
+        host : '127.0.0.1',
+        port : '6379',
+    },
+    redis : {
+        password :'bitzobitzo'
+    },
     //其他配置
+    key: {
+        waitChat: 'waitChat',
+        matchChat: 'matchChat'
+    }
 };
 
 module.exports = config;

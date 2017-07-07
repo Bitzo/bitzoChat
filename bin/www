@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('bitzochat:server');
 var http = require('http');
+var url = require('url');
 
 /**
  * Get port from environment and store in Express.
@@ -14,12 +15,62 @@ var http = require('http');
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+// app.set('hostname', '192.168.199.105');
 
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
+
+/**
+ * Create ws server.
+ */
+
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ server });
+const wsFunction = require('../ws');
+const jwtHelper = require('../utils/jwtHelper'),
+      config = require('../config/config');
+let allUserWss = [];
+wss.on('connection', function connection(ws, req) {
+    const location = url.parse(req.url, true);
+    // You might use location.query.access_token to authenticate or share sessions
+    // or req.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
+
+    //bind user
+    let userInfo = jwtHelper.tokenDecode(location.query.token, config.jwt_secret);
+
+    ws.user = userInfo.accountID;
+    ws.wss = wss;
+
+    allUserWss[ws.user.toString()] = ws;
+
+    console.log('=========================================')
+    console.log(ws.user);
+    console.log(allUserWss.length);
+    console.log('=========================================')
+    for(let i in allUserWss){
+      console.log(i)
+    }
+    // console.log(ws)
+    // console.log('=========================================')
+
+    ws.on('message', function(message) {
+        let receive = JSON.parse(message);
+        if(receive.code === 'AddChat') {
+          wsFunction.addChat(userInfo, allUserWss);
+        }
+
+        if(receive.code === 'sendMsg') {
+          wsFunction.sendMsg(receive.data, userInfo, allUserWss);
+        }
+
+        if(receive.code === 'init') {
+            wsFunction.init(userInfo);
+        }
+    });
+});
 
 /**
  * Listen on provided port, on all network interfaces.

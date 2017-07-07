@@ -1,0 +1,65 @@
+//
+   Created by bitzo on 2017/7/5.
+
+extends layout
+
+block content
+ div(ng-controller="homeController")
+  div.modal.fade(id='myModal')
+    div.modal-dialog
+      div.modal-content
+        div.modal-header
+          button.close(type='button', data-dismiss='modal')
+            span(aria-hidden='true') ×
+            span.sr-only Close
+          h4.modal-title 提示
+        div.modal-body
+          p {{msg}}
+        div.modal-footer
+          button.btn.btn-default(type="button",data-dismiss="modal") Close
+  div.panel.panel-default
+    div.panel-heading
+      h1(style="display:inline-block") Bitzo's Chat Room
+      div.personInfo.pull-right
+        img.img-circle(src="/images/avatar/default.png")
+        h4 {{personInfo.username}}
+        br
+        br
+        button.btn.btn-primary(ng-click="logout()") 退出
+    div.panel-body
+      div.panel.panel-info(style="width:30%;float:left;height:560px")
+        div.panel-heading
+          h4 好友列表
+        div.panel-body.pre-scrollable(style="min-height:500px")
+          strong {{notice}}
+          div.friends(ng-repeat="x in friendlist")
+            img.img-circle(src="/images/avatar/default.png")
+            div.info
+              strong {{x.FName}}
+              button.btn.btn-sm.btn-danger(ng-click="deleteFriend($index, x.friendID)") 删除好友
+      div.panel.panel-success(style="width:68%;float:left;")
+        div.panel-heading
+          h4 {{chatInfo.chatStatus}}
+        div.panel-body.chatArea(style="height:500px;padding: 5px;")
+          div.chatlog.pre-scrollable(id="chatlog")
+            div.log(ng-repeat="x in chatlogs track by $index")
+              b(ng-style="{color: x.isPerson? '#E9533F' : '#2C2B92'}") {{x.name}} {{x.time}}
+              p {{x.content}}
+
+          div.friendInfo
+            img.img-rounded(src='/images/avatar/default.png')
+            strong {{chatInfo.userName}}
+            button.btn.btn-primary(ng-click="addFriend(chatInfo)" ng-disabled="chatInfo.isFriend") 添加好友
+            button.btn.btn-danger(id="matchSatus" ng-disabled="chatInfo.matchStatus" ng-click="startMatch()") {{chatInfo.matchMsg}}
+          div.charPerson
+            img.img-rounded(src='/images/avatar/default.png')
+            br
+            strong {{personInfo.username}}
+          div.chatMsg
+            textarea.form-control(rows='5' style="resize:none" name='msg' ng-model="message")
+            button.btn.btn-sm.btn-info.pull-right(ng-click="sendMessage(message)" ng-disabled="chatInfo.sendMsg") 发送
+
+
+
+
+
