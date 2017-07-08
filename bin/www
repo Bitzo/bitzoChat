@@ -37,7 +37,7 @@ wss.on('connection', function connection(ws, req) {
     const location = url.parse(req.url, true);
 
     let userInfo = jwtHelper.tokenDecode(location.query.token, config.jwt_secret);
-    
+
     ws.user = userInfo.accountID;
     ws.wss = wss;
 

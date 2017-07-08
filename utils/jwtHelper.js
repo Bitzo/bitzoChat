@@ -14,5 +14,12 @@ exports.getToken = function (data) {
 };
 
 exports.tokenDecode = function (token, secret) {
-    return decodedData = jwt.verify(token, secret);
+    let decodeData = '';
+    try {
+        decodeData = jwt.verify(token, secret);
+    }catch (e) {
+        decodeData = '';
+    }finally {
+        return decodeData;
+    }
 };

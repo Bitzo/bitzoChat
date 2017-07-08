@@ -33,6 +33,14 @@ module.exports = function(req, res, next) {
                 }
 
                 let decoded = jwtHelper.tokenDecode(token, config.jwt_secret);
+
+                if(decoded === '') {
+                    res.status(400);
+                    return res.json({
+                        code: 400,
+                        msg: "token不合法!",
+                    });
+                }
                 req.decodeData = decoded;
                 next();
             } catch (err) {
