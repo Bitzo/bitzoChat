@@ -35,12 +35,9 @@ const jwtHelper = require('../utils/jwtHelper'),
 let allUserWss = [];
 wss.on('connection', function connection(ws, req) {
     const location = url.parse(req.url, true);
-    // You might use location.query.access_token to authenticate or share sessions
-    // or req.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
 
-    //bind user
     let userInfo = jwtHelper.tokenDecode(location.query.token, config.jwt_secret);
-
+    
     ws.user = userInfo.accountID;
     ws.wss = wss;
 
