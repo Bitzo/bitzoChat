@@ -22,7 +22,7 @@ RedisCache.prototype.set = function (key, value, cb) {
     let client  = redis.createClient(this.redisConfig);
 
     client.auth(config.redis.password,function () {
-        console.log('通过认证');
+        // console.log('通过认证');
     });
 
     client.on("error", function(error) {
@@ -51,13 +51,13 @@ RedisCache.prototype.get = function (key, cb) {
     let client  = redis.createClient(this.redisConfig);
 
     client.auth(config.redis.password,function () {
-        console.log('通过认证');
+        // console.log('通过认证');
     });
 
     client.on("error", function(error) {
         client.quit();
         console.log(error);
-        console.log("执行这里");
+        // console.log("执行这里");
         return cb(true,null);
     });
 
@@ -82,7 +82,7 @@ RedisCache.prototype.delete = function(key, cb) {
     let client  = redis.createClient(this.redisConfig);
 
     client.auth(config.redis.password,function () {
-        console.log('通过认证');
+        // console.log('通过认证');
     });
 
     client.on("error", function(error) {
@@ -111,7 +111,7 @@ RedisCache.prototype.expire = function(k, interval, cb) {
     let client  = redis.createClient(this.redisConfig);
 
     client.auth(config.redis.password,function () {
-        console.log('通过认证');
+        // console.log('通过认证');
     });
 
     client.on("error", function(error) {

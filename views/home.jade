@@ -19,6 +19,7 @@ block content
           button.btn.btn-default(type="button",data-dismiss="modal") Close
   div.panel.panel-default
     div.panel-heading
+      h1.glyphicon.glyphicon-home &nbsp;
       h1(style="display:inline-block") Bitzo's Chat Room
       div.personInfo.pull-right
         img.img-circle(src="/images/avatar/default.png")
@@ -26,7 +27,8 @@ block content
         h4 {{personInfo.username}}
         br
         br
-        button.btn.btn-primary(ng-click="logout()") 退出
+        button.btn.btn-primary(ng-click="logout()") 退出&nbsp;
+          i.glyphicon.glyphicon-off
     div.panel-body
       div.panel.panel-info(style="width:30%;float:left;height:560px")
         div.panel-heading
@@ -53,7 +55,8 @@ block content
             strong {{chatInfo.userName}}
             button.btn.btn-primary(ng-click="addFriend(chatInfo)" ng-disabled="chatInfo.isFriend") 添加好友&nbsp;
               i.glyphicon.glyphicon-user
-            button.btn.btn-danger(id="matchSatus" ng-disabled="chatInfo.matchStatus" ng-click="startMatch()") {{chatInfo.matchMsg}}
+            button.btn.btn-danger(id="matchSatus" ng-disabled="chatInfo.matchStatus" ng-click="startMatch()") {{chatInfo.matchMsg}}&nbsp;
+              i.glyphicon.glyphicon-refresh
           div.charPerson
             img.img-rounded(src='/images/avatar/default.png')
             br

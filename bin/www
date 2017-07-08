@@ -46,27 +46,31 @@ wss.on('connection', function connection(ws, req) {
 
     allUserWss[ws.user.toString()] = ws;
 
-    console.log('=========================================')
-    console.log(ws.user);
-    console.log(allUserWss.length);
-    console.log('=========================================')
-    for(let i in allUserWss){
-      console.log(i)
-    }
+    // console.log('=========================================')
+    // console.log(ws.user);
+    // console.log(allUserWss.length);
+    // console.log('=========================================')
+    // for(let i in allUserWss){
+    //   console.log(i)
+    // }
     // console.log(ws)
     // console.log('=========================================')
 
     ws.on('message', function(message) {
         let receive = JSON.parse(message);
-        if(receive.code === 'AddChat') {
+        if(receive.code === 'addChat') {
           wsFunction.addChat(userInfo, allUserWss);
         }
 
         if(receive.code === 'sendMsg') {
-          wsFunction.sendMsg(receive.data, userInfo, allUserWss);
+            wsFunction.sendMsg(receive.data, userInfo, allUserWss);
         }
 
         if(receive.code === 'init') {
+            wsFunction.init(userInfo);
+        }
+
+        if(receive.code === 'endChat') {
             wsFunction.init(userInfo);
         }
     });

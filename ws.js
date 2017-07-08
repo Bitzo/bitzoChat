@@ -19,7 +19,7 @@ let response = {
 exports.init = function (userinfo) {
     redisCache.expire(userinfo.accountID, 0, function (err, data) {
         if(err) {
-            console.log('init fail')
+            // console.log('init fail')
         }
     })
 };
@@ -31,9 +31,13 @@ exports.addChat = function (userInfo, ws) {
     //1. 判端之前是否有聊天，有则通知对方下线。
     redisCache.get(accountID, function (msg, data) {
         if (msg === 'OK') {
-            console.log(data)
+            // console.log(data)
             response.code = 'chatEnd';
-            ws[data.toString()].send(JSON.stringify(response));
+            try {
+                ws[data.toString()].send(JSON.stringify(response));
+            }catch (e){
+
+            }
         }
     });
 
@@ -75,7 +79,18 @@ exports.addChat = function (userInfo, ws) {
                     //通知被匹配到的用户
                     response.code = 'matchSuccess';
                     response.data = data;
-                    ws[matchedAccountID.toString()].send(JSON.stringify(response))
+                    try {
+                        ws[matchedAccountID.toString()].send(JSON.stringify(response))
+                    }catch(e){
+                        redisCache.expire(accountID, 60*60, function (err,expireRes) {
+                            if (err) {
+
+                            }
+                        })
+                        response.code = 'matchFail';
+                        return ws[accountID.toString()].send(JSON.stringify(response));
+
+                    }
 
                     data = {
                         accountID: matchedAccountID,
@@ -114,7 +129,7 @@ exports.addChat = function (userInfo, ws) {
                     response.code = 'matchFail';
                     return ws[accountID.toString()].send(JSON.stringify(response));
                 }
-                console.log('setKeyRes' + setKeyRes);
+                // console.log('setKeyRes' + setKeyRes);
 
                 redisCache.expire(config.key.waitChat, 60*2, function (err,expireRes) {
                     if (err) {
@@ -123,7 +138,7 @@ exports.addChat = function (userInfo, ws) {
                         return ws[accountID.toString()].send(JSON.stringify(response));
                     }
 
-                    console.log('expireRes' + expireRes);
+                    // console.log('expireRes' + expireRes);
                 });
             });
         }
@@ -131,7 +146,7 @@ exports.addChat = function (userInfo, ws) {
 };
 
 exports.sendMsg = function (data, userinfo, ws) {
-    console.log(data)
+    // console.log(data)
     //判断发送方和接收方是否还处于聊天中
     redisCache.get(data.accountID, function (msg, results) {
         if (msg === 'OK' && results == userinfo.accountID) {
@@ -148,12 +163,32 @@ exports.sendMsg = function (data, userinfo, ws) {
             };
             response.code = 'msg';
             response.data = chatlog;
-            console.log(data.accountID);
-            ws[data.accountID.toString()].send(JSON.stringify(response));
+            // console.log(data.accountID);
+            try {
+                ws[data.accountID.toString()].send(JSON.stringify(response));
+            } catch (e){
+                redisCache.expire(data.accountID, 0, function (err, data) {
+                    if(err) {
+                        // console.log('init fail')
+                    }
+                });
+                redisCache.expire(userinfo.accountID, 0, function (err, data) {
+                    if(err) {
+                        // console.log('init fail')
+                    }
+                });
+                response.code = 'chatEnd';
+                return ws[userinfo.accountID.toString()].send(JSON.stringify(response));
+            }
             chatlog.isPerson = true;
             ws[userinfo.accountID.toString()].send(JSON.stringify(response));
         }else{
             response.code = 'chatEnd';
+            redisCache.expire(userinfo.accountID, 0, function (err, data) {
+                if(err) {
+                    // console.log('init fail')
+                }
+            })
             ws[userinfo.accountID.toString()].send(JSON.stringify(response));
         }
     })

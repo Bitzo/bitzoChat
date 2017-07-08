@@ -15,6 +15,12 @@ let config = {
     jwt_secret : 'b9i4tz4o',
     // 是否在开发中
     isdev : true,
+    //服务器公网
+    IP: '115.159.201.83',
+    //本地ip
+    localIP: 'localhost',
+    //局域网测试对外公网IP
+    localOpenIP: '192.168.1.155',
     //数据库配置
     mysql : {
         host : '115.159.201.83',
