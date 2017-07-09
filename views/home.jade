@@ -5,6 +5,44 @@ extends layout
 
 block content
  div(ng-controller="homeController")
+  div.modal.fade(id='personInfoEdit')
+    div.modal-dialog
+      div.modal-content
+        div.modal-header
+          button.close(type='button', data-dismiss='modal')
+            span(aria-hidden='true') ×
+            span.sr-only Close
+          h4.modal-title 个人资料更改
+        div.modal-body
+          table.table.table-bordered.table-hover
+            tr
+              td(width="20%")
+                p 头像
+                i (建议上传正方形头像)
+              td(width="70%")
+                input.file-loading(id="userAvatar" type='file' data-preview-file-type="text")
+            tr
+              td(width="20%") 用户名
+              td(width="70%")
+                p {{personInfo.username}}
+            tr
+              td(width="20%") 密码
+              td(width="70%")
+                input.form-control(type='password' ng-model='personInfo.password')
+            tr
+              td(width="20%") 确认密码
+              td(width="70%")
+                input.form-control(type='password' ng-model='personInfo.enPassword')
+            tr
+              td(width="20%") 性别
+              td(width="70%")
+                p 男
+            tr
+              td(width="20%") 电话号码
+              td(width="70%")
+                p 13682640124
+        div.modal-footer
+          button.btn.btn-default(type="button",data-dismiss="modal") Close
   div.modal.fade(id='myModal')
     div.modal-dialog
       div.modal-content
@@ -22,7 +60,8 @@ block content
       h1.glyphicon.glyphicon-home &nbsp;
       h1(style="display:inline-block") Bitzo's Chat Room
       div.personInfo.pull-right
-        img.img-circle(src="/images/avatar/default.png")
+        a(ng-click="showPersonInfo()" href="")
+          img.img-circle(src="/images/avatar/default.png")
 
         h4 {{personInfo.username}}
         br

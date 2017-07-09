@@ -295,4 +295,23 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             $scope.chatInfo.matchMsg = '重新匹配';
         }, 0);
     });
+
+    //PersonInfo
+
+    $("#userAvatar").fileinput({
+        language: 'zh',
+        showBrowse: true,
+        showPreview: true,
+        showRemove: true,
+        showCancel: true,
+        resizeImage: true,
+        showUploadedThumbs: false,
+        allowedFileExtensions: ['jpg', 'png'],
+        uploadUrl: '',
+        maxFileCount: 1,
+    });
+
+    $scope.showPersonInfo = function () {
+        $("#personInfoEdit").modal('show');
+    }
 });
