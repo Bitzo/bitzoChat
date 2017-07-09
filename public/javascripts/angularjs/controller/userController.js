@@ -64,10 +64,12 @@ myApp.controller('userController', function($scope, $http, $location) {
                 location.href = './home';
             }else{
                 alert(response.data.msg);
+                $scope.loginInfo.password = '';
             }
             $scope.errMsg = '';
         }, function error(response) {
             alert(response.data.msg);
+            $scope.loginInfo.password = '';
             $scope.errMsg = '';
         });
     };
