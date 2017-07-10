@@ -10,6 +10,7 @@ var apiAuth = require('./utils/validAuth');
 
 var app = express();
 var routes = require('./routes/routes');
+var fileroutes = require('./routes/fileRoute');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/files', fileroutes);
 app.all('/api/*', apiAuth);
 app.use('/', routes);
 
