@@ -19,28 +19,34 @@ block content
               td(width="20%")
                 p 头像
                 i (建议上传正方形头像)
-              td(width="70%")
-                input.file-loading(id="userAvatar" type='file' data-preview-file-type="text")
+              td(width="50%")
+                div.kv-avatar.text-center(style="width:200px")
+                  input.file-loading(id="userAvatar" name="userAvatar" type="file" required)
+                  div.help-block
+                    small Select file < 1.5 MB
+                div(id="kv-avatar-errors-1" class="center-block" style="width:90%;display:none")
             tr
               td(width="20%") 用户名
-              td(width="70%")
+              td(width="50%")
                 p {{personInfo.username}}
             tr
               td(width="20%") 密码
-              td(width="70%")
-                input.form-control(type='password' ng-model='personInfo.password')
+              td(width="50%")
+                input.form-control(type='password' ng-model='personInfo.password' style='width:50%')
             tr
               td(width="20%") 确认密码
-              td(width="70%")
-                input.form-control(type='password' ng-model='personInfo.enPassword')
+              td(width="50%")
+                input.form-control(type='password' ng-model='personInfo.enPassword' style='width:50%')
             tr
               td(width="20%") 性别
-              td(width="70%")
-                p 男
+              td(width="50%")
+                select.form-control(style='width:30%')
+                  option(value='1' ng-model='personInfo.gender') 男
+                  option(value='0' ng-model='personInfo.gender') 女
             tr
               td(width="20%") 电话号码
-              td(width="70%")
-                p 13682640124
+              td(width="50%")
+                input.form-control(type='text' ng-model='personInfo.phoneNumber' style='width:50%')
         div.modal-footer
           button.btn.btn-default(type="button",data-dismiss="modal") Close
   div.modal.fade(id='myModal')
@@ -60,7 +66,7 @@ block content
       h1.glyphicon.glyphicon-home &nbsp;
       h1(style="display:inline-block") Bitzo's Chat Room
       div.personInfo.pull-right
-        a(ng-click="showPersonInfo()" href="")
+        a.userAvator(ng-click="showPersonInfo()" href="")
           img.img-circle(src="/images/avatar/default.png")
 
         h4 {{personInfo.username}}

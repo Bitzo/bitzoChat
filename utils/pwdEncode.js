@@ -7,8 +7,13 @@
  */
 
 var config = require('../config/config'),
+    crypto = require('crypto'),
     hasha = require('hasha');
 
 exports.hash = function (pwd) {
     return hasha(pwd);
+};
+
+exports.pwdDecode = function (password) {
+
 };

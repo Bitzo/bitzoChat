@@ -157,7 +157,9 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
     };
 
     // 打开一个WebSocket:
-    var ws = new WebSocket('ws://115.159.201.83:3000?token=' + localStorage.getItem('token'));
+    // var ws = new WebSocket('ws://115.159.201.83:3000?token=' + localStorage.getItem('token'));
+    // var ws = new WebSocket('ws://192.168.0.106:3000?token=' + localStorage.getItem('token'));
+    var ws = new WebSocket('ws://localhost:3000?token=' + localStorage.getItem('token'));
 
     // 响应onmessage事件:
     ws.onmessage = function (msg) {
@@ -283,7 +285,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
     });
 
     ws.addEventListener('close', function (event) {
-        alert('连接好像端咯，重新匹配把');
+        alert('连接好像断咯，重新匹配把');
         $timeout(() => {
             $interval.cancel($scope.time_updateNotice);
             $scope.chatInfo.matchStatus = 0;
@@ -300,18 +302,55 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
 
     $("#userAvatar").fileinput({
         language: 'zh',
-        showBrowse: true,
-        showPreview: true,
-        showRemove: true,
-        showCancel: true,
-        resizeImage: true,
-        showUploadedThumbs: false,
-        allowedFileExtensions: ['jpg', 'png'],
-        uploadUrl: '',
-        maxFileCount: 1,
+        // showBrowse: true,
+        // showPreview: true,
+        // showRemove: true,
+        // showCancel: true,
+        // showUploadedThumbs: false,
+        // allowedFileExtensions: ['jpg', 'png'],
+        uploadUrl: '/files/avatar',
+        // maxFileCount: 1,
+        overwriteInitial: true,
+        maxFileSize: 1500,
+        showClose: false,
+        showCaption: false,
+        browseLabel: '',
+        removeLabel: '',
+        browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>',
+        removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
+        removeTitle: 'Cancel or reset changes',
+        elErrorContainer: '#kv-avatar-errors-1',
+        msgErrorClass: 'alert alert-block alert-danger',
+        defaultPreviewContent: '<img src="/images/avatar/default.png" alt="Your Avatar" style="width:160px">',
+        layoutTemplates: {main2: '{preview} {remove} {browse}'},
+        allowedFileExtensions: ["jpg", "png"],
+        uploadExtraData: {
+            token: localStorage.getItem('token')
+        }
     });
 
     $scope.showPersonInfo = function () {
-        $("#personInfoEdit").modal('show');
+        $http({
+            method: 'get',
+            url: "/api/users/person",
+            params: {
+                token: localStorage.getItem('token')
+            }
+        }).then(function success(response) {
+            if (response.data.isSuccess) {
+                $scope.personInfo = response.data.data;
+                $("#personInfoEdit").modal('show');
+            } else {
+                alert(response.data.msg);
+            }
+        }, function error(response) {
+            if (response.data.code == 401) {
+                alert("请退出重新登录！")
+                location.href = '/login';
+            }else{
+                $scope.msg = response.data.msg;
+                $("#myModal").modal('show');
+            }
+        });
     }
 });

@@ -8,6 +8,7 @@
 
 let express = require('express'),
     router = express.Router(),
+    pwd = appRequire('utils/pwdEncode'),
     userService = appRequire('service/userService');
 
 
@@ -26,6 +27,7 @@ router.get('/person', function (req, res) {
 
         if(results.length > 0) {
             let result = results[0];
+            delete result.password;
             res.status(200);
             return res.json({
                 code: 200,
@@ -76,6 +78,5 @@ router.get('/', function (req, res) {
         }
     })
 });
-
 
 module.exports = router;

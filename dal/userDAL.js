@@ -9,7 +9,7 @@
 var db = require(APP_PATH + '/db/db');
 
 exports.queryUsers = function (data, callback) {
-    var sql = 'select accountID, username from userinfo where 1=1';
+    var sql = 'select * from userinfo where 1=1';
 
     for (let key in data) {
         if (data[key] !== '') {
