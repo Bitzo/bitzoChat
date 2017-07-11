@@ -10,6 +10,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "formidable": "^1.1.1",
     "hasha": "^3.0.0",
     "jade": "~1.11.0",
     "jsonwebtoken": "^7.4.1",

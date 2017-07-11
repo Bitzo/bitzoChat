@@ -33,7 +33,10 @@ exports.queryUsers = function (data, callback) {
     let queryData = {
         'accountID': data.accountID || '',
         'username': data.username || '',
-        'password': data.password || ''
+        'password': data.password || '',
+        'gender': data.gender || '',
+        'phoneNumber': data.phoneNumber || '',
+        'avatar': data.avatar || '',
     };
 
     userDAL.queryUsers(queryData, function (err, results) {
@@ -61,10 +64,32 @@ exports.queryUsers = function (data, callback) {
 exports.addUserInfo = function (userdata, callback) {
     let addInfo = {
         'username': userdata.username || '',
-        'password': userdata.password || ''
+        'password': userdata.password || '',
+        'gender': userdata.gender || '',
+        'phoneNumber': userdata.phoneNumber || '',
+        'avatar': userdata.avatar || '',
     };
 
     userDAL.addUserInfo(addInfo, function (err, results) {
+        if (err) {
+            return callback(true, results);
+        }
+
+        return callback(false, results);
+    })
+};
+
+
+exports.updateUserInfo = function (accountID ,userdata, callback) {
+    let addInfo = {
+        'username': userdata.username || '',
+        'password': userdata.password || '',
+        'gender': userdata.gender || '',
+        'phoneNumber': userdata.phoneNumber || '',
+        'avatar': userdata.avatar || '',
+    };
+
+    userDAL.updateUserInfo(accountID, addInfo, function (err, results) {
         if (err) {
             return callback(true, results);
         }

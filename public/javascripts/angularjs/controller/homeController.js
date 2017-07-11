@@ -171,6 +171,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             $timeout(() => {
                 $scope.chatInfo.matchStatus = 0;
                 $scope.chatInfo.isFriend = false;
+                $scope.chatInfo.avatar = data.avatar;
                 $scope.chatInfo.accountID = data.accountID;
                 $scope.chatInfo.userName = data.username;
                 $scope.chatInfo.chatStatus = '在与 ' + data.username + ' 聊天中...';
@@ -187,6 +188,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
                 alert('服务器异常，请稍后再试')
                 $scope.chatInfo.matchStatus = 0;
                 $scope.chatInfo.isFriend = true;
+                $scope.chatInfo.avatar = '/images/avatar/default.png';
                 $scope.chatInfo.accountID = '';
                 $scope.chatInfo.userName = '';
                 $scope.chatInfo.sendMsg = true;
@@ -201,6 +203,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
                 $scope.chatInfo.matchStatus = 0;
                 $scope.chatInfo.isFriend = true;
                 $scope.chatInfo.accountID = '';
+                $scope.chatInfo.avatar = '/images/avatar/default.png';
                 $scope.chatInfo.userName = '';
                 $scope.chatInfo.sendMsg = true;
                 $scope.chatInfo.matchMsg = '重新匹配';
@@ -291,6 +294,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             $scope.chatInfo.matchStatus = 0;
             $scope.chatInfo.isFriend = true;
             $scope.chatInfo.accountID = '';
+            $scope.chatInfo.avatar = '/images/avatar/default.png';
             $scope.chatInfo.userName = '';
             $scope.chatInfo.chatStatus = '聊天窗口';
             $scope.chatInfo.sendMsg = true;
@@ -339,6 +343,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
         }).then(function success(response) {
             if (response.data.isSuccess) {
                 $scope.personInfo = response.data.data;
+                $scope.msg = '';
                 $("#personInfoEdit").modal('show');
             } else {
                 alert(response.data.msg);
@@ -348,8 +353,37 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
                 alert("请退出重新登录！")
                 location.href = '/login';
             }else{
-                $scope.msg = response.data.msg;
+                $scope.msg = response.data.msg || '拉取个人信息失败，请稍后再试！';
                 $("#myModal").modal('show');
+            }
+        });
+    };
+
+    $scope.updatePersonInfo = function (info) {
+        if(info.password !== info.enPassword) {
+            return $scope.msg = '密码不一致';
+        }
+        console.log(info)
+
+        $http({
+            method: 'put',
+            url: "/api/users",
+            data: {
+                token: localStorage.getItem('token'),
+                userInfo: info
+            }
+        }).then(function success(response) {
+            if (response.data.isSuccess) {
+                $scope.msg = response.data.msg || '更新失败，稍后再试';
+            } else {
+                $scope.msg = response.data.msg || '更新失败，稍后再试';
+            }
+        }, function error(response) {
+            if (response.data.code == 401) {
+                alert("请退出重新登录！")
+                location.href = '/login';
+            }else{
+                $scope.msg = response.data.msg || '更新失败，稍后再试';
             }
         });
     }

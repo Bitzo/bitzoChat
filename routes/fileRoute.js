@@ -10,77 +10,76 @@
 let express = require('express'),
     router = express.Router(),
     api = require('./api/routes'),
-    fs = require('fs');
+    fs = require('fs'),
+    config = appRequire('config/config'),
+    userService = appRequire('service/userService'),
+    formidable = require('formidable'),
+    util = require('util'),
+    jwtHelper = appRequire('utils/jwtHelper');
 
 router.use('/', function (req, res, next) {
-    let chunks = [];
-    let size = 0;
-    req.on('data' , function(chunk){
-        chunks.push(chunk);
-        size+=chunk.length;
-    });
 
-    req.on("end",function(){
-        let buffer = Buffer.concat(chunks , size);
+    // parse a file upload
+    let form = new formidable.IncomingForm();
+    form.uploadDir = APP_PATH + "/public/images/avatar";
+    form.keepExtensions = true;
+    form.parse(req, function(err, fields, files) {
 
-        // let boundary = buffer.toString().split('\r\n')[0];
-        // let result = buffer.toString().split(/------[a-zA-Z0-9]+[-]{0,2}/);
-        //
-        // let word = '';
+        let token = fields.token;
+        let decodeData = jwtHelper.tokenDecode(token, config.jwt_secret);
+        // fs.writeFileSync(APP_PATH + '/temp.txt', files);
 
-        //
-        // for(let i=0; i<result.length; ++i) {
-        //     for(let j=0; j<result[i].length; ++j) {
-        //         if(result[i][j] === '\r\n\r\n') {
-        //             delete result[i][j]
-        //         }
-        //     }
-        // }
-        // for(let i=0; i<result.length; ++i) {
-        //     word += result[i] + '\r\n\r\n';
-        // }
-        //
-        //
-        //
-        // // console.log(result);
-        //
-        // fs.writeFileSync(APP_PATH + '/temp.txt', word);
-
-
-        if(!size){
-            res.writeHead(404);
-            res.end('');
-            return;
+        if(decodeData === '') {
+            res.status(401);
+            return res.json({
+                code: 401,
+                isSuccess: false,
+                msg: '请登录后进行此操作！'
+            });
         }
 
-        let rems = [];
-
-        //根据\r\n分离数据和报头
-        for(let i=0;i<buffer.length;i++){
-            let v = buffer[i];
-            let v2 = buffer[i+1];
-            if(v == 13 && v2 == 10){
-                rems.push(i);
+        let uploadDir = APP_PATH + "/public/images/avatar/",
+            filename = decodeData.accountID + '.' + files.userAvatar.name.split('.')[files.userAvatar.name.split('.').length-1];
+        fs.rename(files.userAvatar.path, uploadDir + filename, function (err, results) {
+            if(err){
+                res.status(500);
+                return res.json({
+                    code: 500,
+                    isSuccess: false,
+                    msg: '请稍后再试！！'
+                });
             }
-        }
+            files.userAvatar.path = '/images/avatar/' + filename;
+            userService.updateUserInfo(decodeData.accountID, {avatar: '/images/avatar/'+filename}, function (err, results) {
+                if (err) {
+                    res.status(500);
+                    return res.json({
+                        code: 500,
+                        isSuccess: false,
+                        msg: '请稍后再试！！'
+                    });
+                }
 
+                if (results && results.affectedRows > 0) {
+                    res.status(200);
+                    return res.json({
+                        code: 200,
+                        isSuccess: true,
+                        msg: '成功！',
+                        data: files
+                    });
+                }
+                res.status(200);
+                return res.json({
+                    code: 200,
+                    isSuccess: true,
+                    msg: '成功！',
+                    data: files
 
-        //图片信息
-        let picmsg_1 = buffer.slice(rems[0]+2,rems[1]).toString();
-        let filename = picmsg_1.match(/filename=".*"/g)[0].split('"')[1];
-
-        //图片数据
-        let nbuf = buffer.slice(rems[3]+2,rems[rems.length-2]);
-
-        let path = APP_PATH + '/public/images/avatar/'+filename;
-        fs.writeFileSync(path , nbuf);
-        console.log("保存"+filename+"成功");
-
-        return res.json({
-            success: true
+                });
+            })
         });
     });
 });
-
 
 module.exports = router;

@@ -47,7 +47,9 @@ block content
               td(width="20%") 电话号码
               td(width="50%")
                 input.form-control(type='text' ng-model='personInfo.phoneNumber' style='width:50%')
+          p.error(style="color:red") {{msg}}
         div.modal-footer
+          button.btn.btn-info.pull-right(ng-click="updatePersonInfo(personInfo)") 提交更新
           button.btn.btn-default(type="button",data-dismiss="modal") Close
   div.modal.fade(id='myModal')
     div.modal-dialog
@@ -67,7 +69,7 @@ block content
       h1(style="display:inline-block") Bitzo's Chat Room
       div.personInfo.pull-right
         a.userAvator(ng-click="showPersonInfo()" href="")
-          img.img-circle(src="/images/avatar/default.png")
+          img.img-circle(src="{{personInfo.avatar}}")
 
         h4 {{personInfo.username}}
         br
@@ -81,7 +83,7 @@ block content
         div.panel-body.pre-scrollable(style="min-height:500px")
           strong {{notice}}
           div.friends(ng-repeat="x in friendlist")
-            img.img-circle(src="/images/avatar/default.png")
+            img.img-circle(src="{{x.avatar}}")
             div.info
               strong {{x.FName}}
               button.btn.btn-sm.btn-danger(ng-click="deleteFriend($index, x.friendID)") 删除好友&nbsp;
@@ -96,14 +98,14 @@ block content
               p {{x.content}}
 
           div.friendInfo
-            img.img-rounded(src='/images/avatar/default.png')
+            img.img-rounded(src='{{chatInfo.avatar}}')
             strong {{chatInfo.userName}}
             button.btn.btn-primary(ng-click="addFriend(chatInfo)" ng-disabled="chatInfo.isFriend") 添加好友&nbsp;
               i.glyphicon.glyphicon-user
             button.btn.btn-danger(id="matchSatus" ng-disabled="chatInfo.matchStatus" ng-click="startMatch()") {{chatInfo.matchMsg}}&nbsp;
               i.glyphicon.glyphicon-refresh
           div.charPerson
-            img.img-rounded(src='/images/avatar/default.png')
+            img.img-rounded(src='{{personInfo.avatar}}')
             br
             strong {{personInfo.username}}
           div.chatMsg

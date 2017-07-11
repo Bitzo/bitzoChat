@@ -79,10 +79,42 @@ router.get('/', function (req, res) {
     })
 });
 
-router.post('/', function (req, res) {
-    console.log(11111111);
-    return res.json({
-        code: 200
+router.put('/', function (req, res) {
+    let userData = req.decodeData,
+        data = req.body.userInfo;
+    // console.log(req.body)
+
+    // console.log(data);
+    if(data && data.password.trim()) {
+        data.password = pwd.hash(data.password);
+    }
+
+    userService.updateUserInfo(userData.accountID, data, function (err, results) {
+        if(err) {
+            res.status(500);
+            return res.json({
+                code: 500,
+                isSuccess: false,
+                msg: '服务器错误，稍后再试'
+            });
+        }
+
+        if(results && results.affectedRows > 0) {
+            res.status(200);
+            return res.json({
+                code: 200,
+                isSuccess: true,
+                data: results,
+                msg: '更新成功'
+            });
+        }
+        res.status(200);
+        return res.json({
+            code: 200,
+            isSuccess: true,
+            data: results,
+            msg: '查询成功'
+        });
     })
 });
 
