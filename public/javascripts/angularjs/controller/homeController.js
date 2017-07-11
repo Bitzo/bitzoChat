@@ -5,7 +5,7 @@
  * @Last Modified time: 2017/7/6 12:42
  * @Function:
  */
-myApp.controller('homeController', function($scope, $http, $location, $interval, $timeout, $window) {
+myApp.controller('homeController', function($scope, $http, $location, $interval, $timeout, $window, $route) {
     $scope.notice = '';
     $scope.msg = '';
     /**
@@ -159,7 +159,8 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
     // 打开一个WebSocket:
     // var ws = new WebSocket('ws://115.159.201.83:3000?token=' + localStorage.getItem('token'));
     // var ws = new WebSocket('ws://192.168.0.106:3000?token=' + localStorage.getItem('token'));
-    var ws = new WebSocket('ws://localhost:3000?token=' + localStorage.getItem('token'));
+    var ws = new WebSocket('ws://192.168.199.105:3000?token=' + localStorage.getItem('token'));
+    // var ws = new WebSocket('ws://localhost:3000?token=' + localStorage.getItem('token'));
 
     // 响应onmessage事件:
     ws.onmessage = function (msg) {
@@ -171,7 +172,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             $timeout(() => {
                 $scope.chatInfo.matchStatus = 0;
                 $scope.chatInfo.isFriend = false;
-                $scope.chatInfo.avatar = data.avatar;
+                $scope.chatInfo.avatar = '/images/avatar/' + data.accountID + '.png';
                 $scope.chatInfo.accountID = data.accountID;
                 $scope.chatInfo.userName = data.username;
                 $scope.chatInfo.chatStatus = '在与 ' + data.username + ' 聊天中...';
@@ -179,6 +180,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
                 $scope.chatInfo.sendMsg = false;
                 $scope.msg = '匹配成功咯~ 开始聊天吧！~';
                 $("#myModal").modal('show');
+                console.log($scope.chatInfo.avatar);
             }, 0);
         }
 
@@ -212,7 +214,6 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
 
         if (receive.code = 'msg') {
             let data = receive.data;
-            // console.log(data);
             $timeout(() => {
                 let chatlog = {
                     id: Math.random() * 100,
@@ -249,7 +250,9 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
         $scope.startMatch = function () {
             $scope.chatlogs = [];
             response.code = 'addChat';
+
             ws.send(JSON.stringify(response));
+
             $scope.chatInfo.matchStatus = 1;
             $scope.chatInfo.isFriend = true;
             $scope.chatInfo.sendMsg = true;
@@ -289,6 +292,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
 
     ws.addEventListener('close', function (event) {
         alert('连接好像断咯，重新匹配把');
+        location.href = './home';
         $timeout(() => {
             $interval.cancel($scope.time_updateNotice);
             $scope.chatInfo.matchStatus = 0;
@@ -303,7 +307,6 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
     });
 
     //PersonInfo
-
     $("#userAvatar").fileinput({
         language: 'zh',
         // showBrowse: true,

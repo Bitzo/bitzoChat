@@ -39,7 +39,7 @@ router.use('/', function (req, res, next) {
         }
 
         let uploadDir = APP_PATH + "/public/images/avatar/",
-            filename = decodeData.accountID + '.' + files.userAvatar.name.split('.')[files.userAvatar.name.split('.').length-1];
+            filename = decodeData.accountID + '.png';
         fs.rename(files.userAvatar.path, uploadDir + filename, function (err, results) {
             if(err){
                 res.status(500);

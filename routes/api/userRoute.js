@@ -43,7 +43,7 @@ router.get('/person', function (req, res) {
                 msg: '无记录'
             });
         }
-    })
+    });
 });
 
 

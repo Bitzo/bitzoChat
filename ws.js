@@ -86,7 +86,7 @@ exports.addChat = function (userInfo, ws) {
                             if (err) {
 
                             }
-                        })
+                        });
                         response.code = 'matchFail';
                         return ws[accountID.toString()].send(JSON.stringify(response));
 
@@ -146,7 +146,6 @@ exports.addChat = function (userInfo, ws) {
 };
 
 exports.sendMsg = function (data, userinfo, ws) {
-    // console.log(data)
     //判断发送方和接收方是否还处于聊天中
     redisCache.get(data.accountID, function (msg, results) {
         if (msg === 'OK' && results == userinfo.accountID) {
