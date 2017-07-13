@@ -166,6 +166,12 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
     ws.onmessage = function (msg) {
         // console.log(msg);
         let receive = JSON.parse(msg.data);
+
+        if (receive.code === 'reLogin') {
+            alert('登录失效，请重新登录！');
+            location.href = './login';
+        }
+
         if (receive.code === 'matchSuccess') {
             $interval.cancel($scope.time_updateNotice);
             let data = receive.data;
@@ -180,7 +186,6 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
                 $scope.chatInfo.sendMsg = false;
                 $scope.msg = '匹配成功咯~ 开始聊天吧！~';
                 $("#myModal").modal('show');
-                console.log($scope.chatInfo.avatar);
             }, 0);
         }
 

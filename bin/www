@@ -38,6 +38,17 @@ wss.on('connection', function connection(ws, req) {
 
     let userInfo = jwtHelper.tokenDecode(location.query.token, config.jwt_secret);
 
+    let response = {
+        code: '',
+        data: ''
+    };
+
+    if(userInfo === '') {
+        response.code = 'reLogin';
+        response.data = '';
+        return ws.send(JSON.stringify(response));
+    }
+
     ws.user = userInfo.accountID;
     ws.wss = wss;
 

@@ -23,10 +23,10 @@ let config = {
     localOpenIP: '192.168.1.155',
     //数据库配置
     mysql : {
-        host : '115.159.201.83',
-        user : 'bitzo',
-        password : 'bitzo',
-        database : 'bitzoChat',
+        host : '',
+        user : '',
+        password : '',
+        database : '',
         connectionLimit : 100,
         supportBigNumbers : true,
     },
@@ -41,7 +41,7 @@ let config = {
         port : '6379',
     },
     redis : {
-        password :'bitzobitzo'
+        password :''
     },
     //其他配置
     key: {
