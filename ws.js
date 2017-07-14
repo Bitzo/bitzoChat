@@ -10,6 +10,7 @@ let config = appRequire('config/config'),
     RedisHelper = appRequire('utils/redisHelper'),
     redisCache = new RedisHelper(),
     relationService = appRequire('service/relationService'),
+    userService = appRequire('service/userService'),
     moment = require('moment');
 
 let response = {
@@ -102,6 +103,20 @@ exports.addChat = function (userInfo, ws) {
                                 }
                             }
                         });
+                        userService.queryUsers({accountID: accountID}, function (err, data) {
+                            if (err){
+
+                            } else {
+                                if(data && data.length > 0){
+                                    ws[matchedAccountID.toString()].send(JSON.stringify({
+                                        code: 'chatAvatar',
+                                        data: {
+                                            avatar: data[0].avatar
+                                        }
+                                    }));
+                                }
+                            }
+                        });
                         ws[matchedAccountID.toString()].send(JSON.stringify(response))
                     }catch(e){
                         redisCache.expire(accountID, 60*60, function (err,expireRes) {
@@ -160,6 +175,20 @@ exports.addChat = function (userInfo, ws) {
                                 }))
                             }
                         }
+                    });
+                    userService.queryUsers({accountID: matchedAccountID}, function (err, data) {
+                       if (err){
+
+                       } else {
+                           if(data && data.length > 0){
+                               ws[accountID.toString()].send(JSON.stringify({
+                                   code: 'chatAvatar',
+                                   data: {
+                                       avatar: data[0].avatar
+                                   }
+                               }));
+                           }
+                       }
                     });
                     return ws[accountID.toString()].send(JSON.stringify(response));
                 });

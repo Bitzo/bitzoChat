@@ -176,7 +176,13 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             $timeout(() => {
                 $scope.chatInfo.isFriend = data.isFriend;
             }, 0);
-        };
+        }
+
+        if (receive.code === 'chatAvatar') {
+            $timeout(() => {
+                $scope.chatInfo.avatar = receive.data.avatar;
+            }, 0);
+        }
 
         if (receive.code === 'matchSuccess') {
             $interval.cancel($scope.time_updateNotice);

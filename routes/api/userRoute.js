@@ -85,7 +85,7 @@ router.put('/', function (req, res) {
     // console.log(req.body)
 
     // console.log(data);
-    if(data && data.password.trim()) {
+    if(data && data.password && data.password.trim()) {
         data.password = pwd.hash(data.password);
     }
 
