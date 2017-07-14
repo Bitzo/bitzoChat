@@ -9,6 +9,7 @@
 let config = appRequire('config/config'),
     RedisHelper = appRequire('utils/redisHelper'),
     redisCache = new RedisHelper(),
+    relationService = appRequire('service/relationService'),
     moment = require('moment');
 
 let response = {
@@ -80,6 +81,27 @@ exports.addChat = function (userInfo, ws) {
                     response.code = 'matchSuccess';
                     response.data = data;
                     try {
+                        relationService.queryRelation({accountID: matchedAccountID, friendID: accountID}, function (err, results) {
+                            if(err) {
+                                console.log('relationService Fail');
+                            }else{
+                                if(results && results.length>0) {
+                                    ws[matchedAccountID.toString()].send(JSON.stringify({
+                                        code: 'friendStatus',
+                                        data: {
+                                            isFriend: true
+                                        }
+                                    }))
+                                }else{
+                                    ws[matchedAccountID.toString()].send(JSON.stringify({
+                                        code: 'friendStatus',
+                                        data: {
+                                            isFriend: false
+                                        }
+                                    }))
+                                }
+                            }
+                        });
                         ws[matchedAccountID.toString()].send(JSON.stringify(response))
                     }catch(e){
                         redisCache.expire(accountID, 60*60, function (err,expireRes) {
@@ -117,6 +139,28 @@ exports.addChat = function (userInfo, ws) {
                     //通知主动匹配的用户
                     response.code = 'matchSuccess';
                     response.data = data;
+                    //查询当前用户与匹配用户的关系
+                    relationService.queryRelation({accountID: accountID, friendID: matchedAccountID}, function (err, results) {
+                        if(err) {
+                            console.log('relationService Fail');
+                        }else{
+                            if(results && results.length>0) {
+                                ws[accountID.toString()].send(JSON.stringify({
+                                    code: 'friendStatus',
+                                    data: {
+                                        isFriend: true
+                                    }
+                                }))
+                            }else{
+                                ws[accountID.toString()].send(JSON.stringify({
+                                    code: 'friendStatus',
+                                    data: {
+                                        isFriend: false
+                                    }
+                                }))
+                            }
+                        }
+                    });
                     return ws[accountID.toString()].send(JSON.stringify(response));
                 });
             });
@@ -129,7 +173,6 @@ exports.addChat = function (userInfo, ws) {
                     response.code = 'matchFail';
                     return ws[accountID.toString()].send(JSON.stringify(response));
                 }
-                // console.log('setKeyRes' + setKeyRes);
 
                 redisCache.expire(config.key.waitChat, 60*2, function (err,expireRes) {
                     if (err) {
@@ -138,7 +181,6 @@ exports.addChat = function (userInfo, ws) {
                         return ws[accountID.toString()].send(JSON.stringify(response));
                     }
 
-                    // console.log('expireRes' + expireRes);
                 });
             });
         }

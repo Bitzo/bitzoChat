@@ -94,7 +94,6 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
                 $("#myModal").modal('show');
             }
         });
-        ws.send(JSON.stringify(response));
     };
 
     $scope.deleteFriend = function (index, fid) {
@@ -164,13 +163,20 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
 
     // 响应onmessage事件:
     ws.onmessage = function (msg) {
-        // console.log(msg);
+        console.log(msg);
         let receive = JSON.parse(msg.data);
 
         if (receive.code === 'reLogin') {
             alert('登录失效，请重新登录！');
             location.href = './login';
         }
+
+        if (receive.code === 'friendStatus') {
+            let data = receive.data;
+            $timeout(() => {
+                $scope.chatInfo.isFriend = data.isFriend;
+            }, 0);
+        };
 
         if (receive.code === 'matchSuccess') {
             $interval.cancel($scope.time_updateNotice);

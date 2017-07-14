@@ -65,8 +65,9 @@ block content
           button.btn.btn-default(type="button",data-dismiss="modal") Close
   div.panel.panel-default
     div.panel-heading
-      h1.glyphicon.glyphicon-home &nbsp;
-      h1(style="display:inline-block") Bitzo's Chat Room
+      a(style="color: black" href="./home")
+        h1.glyphicon.glyphicon-home &nbsp;
+        h1(style="display:inline-block") Bitzo's Chat Room
       div.personInfo.pull-right
         a.userAvator(ng-click="showPersonInfo()" href="")
           img.img-circle(src="{{personInfo.avatar}}")

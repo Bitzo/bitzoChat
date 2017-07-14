@@ -8,21 +8,20 @@ html
     //link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap-theme.min.css')
     link(rel='stylesheet', href='/bower_components/bootstrap-fileinput/css/fileinput.min.css')
     link(rel='icon', href='/images/favicon.png')
+    script(src="/bower_components/jquery/dist/jquery.min.js")
+    script(src="/bower_components/angular/angular.min.js")
+    script(src="/bower_components/angular-route/angular-route.min.js")
+    script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
+    script(src="/bower_components/bootstrap-fileinput/js/plugins/piexif.min.js")
+    script(src="/bower_components/bootstrap-fileinput/js/plugins/purify.min.js")
+    script(src="/bower_components/bootstrap-fileinput/js/fileinput.min.js")
+    script(src="/bower_components/bootstrap-fileinput/js/locales/zh.js")
+    script(src="/javascripts/angularjs/config/baseconfig.js")
+    script(src="/javascripts/angularjs/controller/userController.js")
+    script(src="/javascripts/angularjs/controller/homeController.js")
   body(ng-app='myApp' ng-controller="baseController")
     div(id="all")
       block content
-
-      script(src="/bower_components/jquery/dist/jquery.min.js")
-      script(src="/bower_components/angular/angular.min.js")
-      script(src="/bower_components/angular-route/angular-route.min.js")
-      script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
-      script(src="/bower_components/bootstrap-fileinput/js/plugins/piexif.min.js")
-      script(src="/bower_components/bootstrap-fileinput/js/plugins/purify.min.js")
-      script(src="/bower_components/bootstrap-fileinput/js/fileinput.min.js")
-      script(src="/bower_components/bootstrap-fileinput/js/locales/zh.js")
-      script(src="/javascripts/angularjs/config/baseconfig.js")
-      script(src="/javascripts/angularjs/controller/userController.js")
-      script(src="/javascripts/angularjs/controller/homeController.js")
 
   div.footer
       div.copyright
