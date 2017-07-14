@@ -77,8 +77,12 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
                 $scope.friendlist.push({
                     friendID: chatInfo.accountID,
                     FName: chatInfo.userName,
-                    ID: response.data.data.insertId
+                    ID: response.data.data.insertId,
+                    avatar: $scope.chatInfo.avatar
                 })
+                $timeout(() => {
+                    $scope.chatInfo.isFriend = true;
+                }, 0);
             } else {
                 // alert(response.data.msg);
                 $scope.msg = response.data.msg;
@@ -294,6 +298,10 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
         };
 
         $scope.sendMessage = function (msg) {
+            if(!msg){
+                return '';
+            }
+
             let accountID = $scope.chatInfo.accountID,
                 username = $scope.chatInfo.userName;
             response.code = 'sendMsg';
