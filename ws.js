@@ -258,8 +258,84 @@ exports.sendMsg = function (data, userinfo, ws) {
                 if(err) {
                     // console.log('init fail')
                 }
-            })
+            });
             ws[userinfo.accountID.toString()].send(JSON.stringify(response));
+        }
+    })
+};
+
+exports.addFriend = function (userinfo, data, ws) {
+    let accountID = data,
+        userID = userinfo.accountID;
+
+    userService.queryUsers({accountID: userID}, function (err, results) {
+        if(err){
+
+        }
+        if(results&&results.length>0){
+            results = results[0];
+            response.code = 'addFriendRequest';
+            response.data = {
+                accountID: results.accountID,
+                username: results.username,
+                avatar: results.avatar
+            };
+            try {
+                return ws[accountID.toString()].send(JSON.stringify(response));
+            }catch (err){
+                response.code = 'chatEnd';
+                try {
+                    return ws[userID.toString()].send(JSON.stringify(response));
+                }catch (err){
+                    return '';
+                }
+            }
+        }else{
+
+        }
+    })
+};
+
+exports.addFriendCheck = function (userinfo, data, ws) {
+    let accountID = data.accountID,
+        userID = userinfo.accountID,
+        result = data.isSuccess;
+
+    userService.queryUsers({accountID: userID}, function (err, results) {
+        if(err) {
+
+        }
+
+        if(results&&results.length>0){
+            results = results[0];
+            if(result) {
+                response.code = 'addFriendCheck';
+                response.data = {
+                    isSuccess: true,
+                    accountID: results.accountID,
+                    username: results.username,
+                    avatar: results.avatar
+                };
+                try{
+                    console.log(accountID);
+                    return ws[accountID.toString()].send(JSON.stringify(response));
+                }catch (err) {
+
+                }
+            }else{
+                response.code = 'addFriendCheck';
+                response.data = {
+                    isSuccess: false,
+                    accountID: accountID
+                };
+                try{
+                    return ws[accountID.toString()].send(JSON.stringify(response));
+                }catch (err) {
+
+                }
+            }
+        }else{
+
         }
     })
 };

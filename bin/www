@@ -81,6 +81,14 @@ wss.on('connection', function connection(ws, req) {
         if(receive.code === 'endChat') {
             wsFunction.init(userInfo);
         }
+
+        if (receive.code === 'addFriend') {
+            wsFunction.addFriend(userInfo, receive.data, allUserWss);
+        }
+
+        if (receive.code === 'addFriendCheck') {
+            wsFunction.addFriendCheck(userInfo, receive.data, allUserWss);
+        }
     });
 });
 

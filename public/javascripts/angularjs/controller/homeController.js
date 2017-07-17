@@ -63,10 +63,10 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
         location.href = '/login';
     };
 
-    $scope.addFriend = function (chatInfo) {
+    function addFriend(info) {
         $http({
             method: 'post',
-            url: "/api/friends/" + chatInfo.accountID,
+            url: "/api/friends/" + info.accountID,
             data: {
                 token: localStorage.getItem('token')
             }
@@ -75,16 +75,16 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
                 $scope.msg = response.data.msg;
                 $("#myModal").modal('show');
                 $scope.friendlist.push({
-                    friendID: chatInfo.accountID,
-                    FName: chatInfo.userName,
+                    friendID: info.accountID,
+                    FName: info.username,
                     ID: response.data.data.insertId,
-                    avatar: $scope.chatInfo.avatar
-                })
+                    avatar: info.avatar
+                });
+
                 $timeout(() => {
                     $scope.chatInfo.isFriend = true;
                 }, 0);
             } else {
-                // alert(response.data.msg);
                 $scope.msg = response.data.msg;
                 $("#myModal").modal('show');
             }
@@ -98,7 +98,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
                 $("#myModal").modal('show');
             }
         });
-    };
+    }
 
     $scope.deleteFriend = function (index, fid) {
         let mymessage = confirm("是否确认删除好友：" + $scope.friendlist[index].FName);
@@ -162,8 +162,8 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
     // 打开一个WebSocket:
     // var ws = new WebSocket('ws://115.159.201.83:3000?token=' + localStorage.getItem('token'));
     // var ws = new WebSocket('ws://192.168.0.106:3000?token=' + localStorage.getItem('token'));
-    var ws = new WebSocket('ws://192.168.199.105:3000?token=' + localStorage.getItem('token'));
-    // var ws = new WebSocket('ws://localhost:3000?token=' + localStorage.getItem('token'));
+    // var ws = new WebSocket('ws://192.168.199.105:3000?token=' + localStorage.getItem('token'));
+    var ws = new WebSocket('ws://localhost:3000?token=' + localStorage.getItem('token'));
 
     // 响应onmessage事件:
     ws.onmessage = function (msg) {
@@ -233,7 +233,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             }, 0);
         }
 
-        if (receive.code = 'msg') {
+        if (receive.code === 'msg') {
             let data = receive.data;
             $timeout(() => {
                 let chatlog = {
@@ -248,6 +248,47 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             $timeout(() => {
                 $('#chatlog').scrollTop($('#chatlog')[0].scrollHeight);
             }, 200);
+        }
+
+        if(receive.code === 'addFriendRequest') {
+            let msg = confirm('用户：【' + receive.data.username + '】想要添加您为好友，是否同意？')
+
+            if(msg){
+                let response = {
+                    code: '',
+                    data: ''
+                };
+
+                response.code = 'addFriendCheck';
+                response.data = {
+                    isSuccess: true,
+                    accountID: receive.data.accountID
+                };
+                console.log('sendMSG=====================')
+                ws.send(JSON.stringify(response));
+                addFriend(receive.data);
+            }else{
+                let response = {
+                    code: '',
+                    data: ''
+                };
+
+               response.code = 'addFriendCheck';
+               response.data = {
+                   isSuccess: false,
+                   accountID: receive.data.accountID
+               };
+               return ws.send(JSON.stringify(response));
+            }
+        }
+
+        if(receive.code === 'addFriendCheck') {
+            if(receive.data.isSuccess) {
+                alert('用户【' + receive.data.username + '】接受了你的好友请求！');
+                addFriend(receive.data);
+            }else{
+                alert('用户【' + receive.data.username + '】拒绝了你的好友请求！');
+            }
         }
     };
 
@@ -267,6 +308,15 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             response.code = 'init';
             ws.send(JSON.stringify(response));
         }, 0);
+
+        //添加好友申请
+        $scope.addFriend = function (chatInfo) {
+
+            response.code = 'addFriend';
+            response.data = chatInfo.accountID;
+            ws.send(JSON.stringify(response));
+            alert('好友申请已发出！');
+        };
 
         $scope.startMatch = function () {
             $scope.chatlogs = [];
