@@ -8,8 +8,9 @@
 myApp.controller('homeController', function($scope, $http, $location, $interval, $timeout, $window, $route) {
     $scope.notice = '';
     $scope.msg = '';
+
     /**
-     * 获取好友信息
+     * 获取好友信息列表
      */
     $scope.friendlist = [];
     $http({
@@ -57,12 +58,16 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
         }
     });
 
-
+    //登出
     $scope.logout = function () {
         localStorage.clear();
         location.href = '/login';
     };
 
+    /**
+     * 添加好友
+     * @param info 对方的信息
+     */
     function addFriend(info) {
         $http({
             method: 'post',
@@ -100,6 +105,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
         });
     }
 
+    //删除好友
     $scope.deleteFriend = function (index, fid) {
         let mymessage = confirm("是否确认删除好友：" + $scope.friendlist[index].FName);
 
@@ -150,14 +156,8 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
         matchMsg: "开始匹配",
     };
 
+    //聊天记录
     $scope.chatlogs = [];
-    let chatLog = {
-        id: '',
-        name: '',
-        isPerson: '',
-        time: '',
-        content: ''
-    };
 
     // 打开一个WebSocket:
     // var ws = new WebSocket('ws://115.159.201.83:3000?token=' + localStorage.getItem('token'));
@@ -168,13 +168,17 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
     // 响应onmessage事件:
     ws.onmessage = function (msg) {
         console.log(msg);
+
+        //解析收到的消息
         let receive = JSON.parse(msg.data);
 
+        //消息异常情况，请求重新登录获取最新的token
         if (receive.code === 'reLogin') {
             alert('登录失效，请重新登录！');
             location.href = './login';
         }
 
+        //获取到聊天对象的好友状态
         if (receive.code === 'friendStatus') {
             let data = receive.data;
             $timeout(() => {
@@ -182,12 +186,14 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             }, 0);
         }
 
+        //获取到聊天对象的头像信息
         if (receive.code === 'chatAvatar') {
             $timeout(() => {
                 $scope.chatInfo.avatar = receive.data.avatar;
             }, 0);
         }
 
+        //匹配聊天成功
         if (receive.code === 'matchSuccess') {
             $interval.cancel($scope.time_updateNotice);
             let data = receive.data;
@@ -205,6 +211,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             }, 0);
         }
 
+        //匹配聊天失败，这里主要是服务器的异常，非匹配超时
         if (receive.code === 'matchFail') {
             $interval.cancel($scope.time_updateNotice);
             $timeout(() => {
@@ -219,6 +226,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             }, 0);
         }
 
+        //聊天关闭
         if (receive.code === 'chatEnd') {
             $timeout(() => {
                 $scope.msg = '对方已结束聊天，重新匹配一个吧~';
@@ -233,6 +241,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             }, 0);
         }
 
+        //收到聊天对象发来的新消息
         if (receive.code === 'msg') {
             let data = receive.data;
             $timeout(() => {
@@ -250,6 +259,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             }, 200);
         }
 
+        //收到好友请求
         if(receive.code === 'addFriendRequest') {
             let msg = confirm('用户：【' + receive.data.username + '】想要添加您为好友，是否同意？')
 
@@ -282,6 +292,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             }
         }
 
+        //收到好友请求的回复
         if(receive.code === 'addFriendCheck') {
             if(receive.data.isSuccess) {
                 alert('用户【' + receive.data.username + '】接受了你的好友请求！');
@@ -294,30 +305,33 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
 
     // 给服务器发送一个字符串:
     ws.addEventListener('open', function (event) {
+        // 发送消息模版
         let response = {
             code: '',
             data: ''
         };
 
+        //页面刷新等情况下向服务器发送结束聊天的通知
         $window.onunload = function (e) {
             response.code = 'endChat';
             ws.send(JSON.stringify(response));
         };
 
+        //ws开启时初始化个人状态
         $timeout(() => {
             response.code = 'init';
             ws.send(JSON.stringify(response));
         }, 0);
 
-        //添加好友申请
+        //向服务器发送添加好友申请
         $scope.addFriend = function (chatInfo) {
-
             response.code = 'addFriend';
             response.data = chatInfo.accountID;
             ws.send(JSON.stringify(response));
             alert('好友申请已发出！');
         };
 
+        //发送请求匹配聊天的消息
         $scope.startMatch = function () {
             $scope.chatlogs = [];
             response.code = 'addChat';
@@ -347,6 +361,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
             }, 1000 * 120);
         };
 
+        //向聊天对象发送消息
         $scope.sendMessage = function (msg) {
             if(!msg){
                 return '';
@@ -365,6 +380,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
         }
     });
 
+    //ws连接关闭
     ws.addEventListener('close', function (event) {
         alert('连接好像断咯，重新匹配把');
         location.href = './home';
@@ -411,6 +427,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
         }
     });
 
+    //查询展示个人信息
     $scope.showPersonInfo = function () {
         $http({
             method: 'get',
@@ -437,6 +454,7 @@ myApp.controller('homeController', function($scope, $http, $location, $interval,
         });
     };
 
+    //修改个人信息
     $scope.updatePersonInfo = function (info) {
         if(info.password !== info.enPassword) {
             return $scope.msg = '密码不一致';

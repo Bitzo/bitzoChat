@@ -13,11 +13,13 @@ let config = appRequire('config/config'),
     userService = appRequire('service/userService'),
     moment = require('moment');
 
+//回复消息模版
 let response = {
     code: '',
     data: ''
 };
 
+//redis初始化及其它初始化功能
 exports.init = function (userinfo) {
     redisCache.expire(userinfo.accountID, 0, function (err, data) {
         if(err) {
@@ -26,6 +28,7 @@ exports.init = function (userinfo) {
     })
 };
 
+//加入匹配聊天
 exports.addChat = function (userInfo, ws) {
     let accountID = userInfo.accountID,
         username = userInfo.username;
@@ -216,6 +219,7 @@ exports.addChat = function (userInfo, ws) {
     })
 };
 
+//转发用户消息
 exports.sendMsg = function (data, userinfo, ws) {
     //判断发送方和接收方是否还处于聊天中
     redisCache.get(data.accountID, function (msg, results) {
@@ -264,6 +268,7 @@ exports.sendMsg = function (data, userinfo, ws) {
     })
 };
 
+//添加用户
 exports.addFriend = function (userinfo, data, ws) {
     let accountID = data,
         userID = userinfo.accountID;
@@ -296,6 +301,7 @@ exports.addFriend = function (userinfo, data, ws) {
     })
 };
 
+//添加用户核实请求
 exports.addFriendCheck = function (userinfo, data, ws) {
     let accountID = data.accountID,
         userID = userinfo.accountID,
