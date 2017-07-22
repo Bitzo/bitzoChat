@@ -19,10 +19,10 @@ nodejs + websocket  实现的随机聊天程序。
 - [x] 随机配对，进行聊天
 - [x] 单向好友系统
 - [x] 个人信息更改
+- [x] 修改好友模块，更改为双向好友
 
 ## 规划
 
-- [ ] 修改好友模块，更改为双向好友
 - [ ] 好友在线情况
 - [ ] 在线好友直接聊天
 - [ ] 非在线好友留言
@@ -35,4 +35,8 @@ nodejs + websocket  实现的随机聊天程序。
 
 1. npm install
 
-2. npm start 
+2. bower install
+
+3. npm start 
+
+4. 访问localhost:3000

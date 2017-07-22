@@ -3,3 +3,4 @@ node_modules/
 .idea/
 /public/images/avatar/
 !/public/images/avatar/default.png
+/public/bower_components/
