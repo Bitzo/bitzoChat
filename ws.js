@@ -326,13 +326,20 @@ exports.addFriendCheck = function (userinfo, data, ws) {
                     console.log(accountID);
                     return ws[accountID.toString()].send(JSON.stringify(response));
                 }catch (err) {
+                    relationService.addRelation(accountID, userID, function (err, results) {
+                        if(err){
+                            console.log('添加失败');
+                        }
 
+                    })
                 }
             }else{
                 response.code = 'addFriendCheck';
                 response.data = {
                     isSuccess: false,
-                    accountID: accountID
+                    accountID: accountID,
+                    username: results.username,
+                    avatar: results.avatar
                 };
                 try{
                     return ws[accountID.toString()].send(JSON.stringify(response));
