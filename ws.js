@@ -36,13 +36,16 @@ exports.addChat = function (userInfo, ws) {
     //1. 判端之前是否有聊天，有则通知对方下线。
     redisCache.get(accountID, function (msg, data) {
         if (msg === 'OK') {
-            // console.log(data)
             response.code = 'chatEnd';
-            try {
-                ws[data.toString()].send(JSON.stringify(response));
-            }catch (e){
+            redisCache.get(data, function (msg, result) {
+               if(msg === 'OK' && result == accountID) {
+                   try {
+                       ws[data.toString()].send(JSON.stringify(response));
+                   }catch (e){
 
-            }
+                   }
+               }
+            });
         }
     });
 
