@@ -14,7 +14,8 @@ a {
 
 #all{
   margin: 0px auto;
-  width: 860px;
+  min-width: 860px;
+  width: 70%;
   height: auto;
   padding-bottom: 10px;
   position:relative;
@@ -34,15 +35,33 @@ a {
 }
 
 .copyright{
-  width: 480px;
+  min-width: 860px;
+  width: auto;
   margin: auto auto;
-
+  display: block;
+  text-align: center;
 }
 
 .copyright p{
   margin: auto auto;
   display: inline-block;
 }
+
+.copyright a{
+  color: black;
+  text-decoration: none;
+}
+
+.copyright a:focus{
+  color: black;
+  text-decoration: none;
+}
+
+.copyright a:hover{
+  color: black;
+  text-decoration: none;
+}
+
 
 .friends {
   width: 100%;

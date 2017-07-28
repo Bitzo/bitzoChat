@@ -39,4 +39,4 @@ nodejs + websocket  实现的随机聊天程序。
 
 3. npm start 
 
-4. 访问localhost:3000
+4. 访问 localhost:3000
