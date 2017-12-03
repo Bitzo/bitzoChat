@@ -4,12 +4,12 @@ extends layout
 
 block content
 
-  div.panel.panel-info(ng-controller="userController", style="width:600px;margin: auto")
+  div.panel.panel-info(style="width:600px;margin: auto")
     div.panel-heading
       h1.h1(style="margin-left:100px") 登录
     div.panel-body
       div(class="formTable")
-          h4(style="color:red") {{errMsg}}
+          h4(style="color:red") errMsg
           div.form-group
             label(for='username') 用户名:
             input.form-control(type='text' name='username' id='username' placeholder='用户名' ng-model="loginInfo.username")
@@ -17,10 +17,8 @@ block content
             label(for='passwprd') 密码:
             input.form-control(type='password' name='passwprd' id='passwprd' placeholder='密码' ng-model="loginInfo.password")
           div.form-group.pull-right
-            button.btn.btn-default(type="reset" ng-click="reset(loginInfo)") 重置
-            &nbsp&nbsp
+            button.btn.btn-default(type="reset" ng-click="reset(loginInfo)") 重置&nbsp&nbsp
             button.btn.btn-info(ng-click="login(loginInfo)") 登录
           i.glyphicon.glyphicon-question-sign
           i 还没有账号？
           a(href='./register') 点击注册
-

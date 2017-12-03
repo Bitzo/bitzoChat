@@ -5,12 +5,12 @@ extends layout
 
 block content
 
-  div.panel.panel-info(ng-controller="userController", style="width:600px;margin: auto")
+  div.panel.panel-info(style="width:600px;margin: auto")
     div.panel-heading
       h1.h1(style="margin-left:100px") 注册
     div.panel-body
       div(class="formTable")
-          h4(style="color:red") {{errMsg}}
+          h4(style="color:red") errMsg
           div.form-group
             label(for='username') 用户名:
             input.form-control(type='text' name='username' id='username' placeholder='用户名' ng-model="registerInfo.username")
@@ -21,8 +21,7 @@ block content
             label(for='Enpassword') 确认密码:
             input.form-control(type='password' name='password' id='Enpassword' placeholder='确认密码' ng-model="registerInfo.Enpassword")
           div.form-group.pull-right
-            button.btn.btn-default(type="reset" ng-click="reset(registerInfo)") 重置
-            &nbsp&nbsp
+            button.btn.btn-default(type="reset" ng-click="reset(registerInfo)") 重置&nbsp&nbsp
             button.btn.btn-info(ng-click="register(registerInfo)") 完成注册
           i.glyphicon.glyphicon-question-sign
           i 已有账号？

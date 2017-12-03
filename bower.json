@@ -1,9 +1,9 @@
 {
-  "name": "bitzochat",
+  "name": "bitzoChat",
   "description": "",
-  "main": "",
+  "main": "index.js",
   "authors": [
-    "bitzo <bitzo@qq.com>"
+    "bitzo"
   ],
   "license": "MIT",
   "homepage": "https://github.com/Bitzo/bitzoChat",
@@ -16,10 +16,9 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "^1.6.5",
-    "angular-route": "^1.6.5",
     "bootstrap": "^3.3.7",
-    "bootstrap-fileinput": "^4.4.2",
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "angular": "^1.6.7",
+    "angular-route": "^1.6.7"
   }
 }

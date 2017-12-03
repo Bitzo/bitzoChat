@@ -4,7 +4,7 @@
 extends layout
 
 block content
- div(ng-controller="homeController")
+ div()
   div.modal.fade(id='personInfoEdit')
     div.modal-dialog
       div.modal-content
@@ -28,7 +28,7 @@ block content
             tr
               td(width="20%") 用户名
               td(width="50%")
-                p {{personInfo.username}}
+                p bitzo
             tr
               td(width="20%") 密码
               td(width="50%")
@@ -47,7 +47,7 @@ block content
               td(width="20%") 电话号码
               td(width="50%")
                 input.form-control(type='text' ng-model='personInfo.phoneNumber' style='width:50%')
-          p.error(style="color:red") {{msg}}
+          p.error(style="color:red") error
         div.modal-footer
           button.btn.btn-info.pull-right(ng-click="updatePersonInfo(personInfo)") 提交更新
           button.btn.btn-default(type="button",data-dismiss="modal") Close
@@ -60,7 +60,7 @@ block content
             span.sr-only Close
           h4.modal-title 提示
         div.modal-body
-          p {{msg}}
+          p msg
         div.modal-footer
           button.btn.btn-default(type="button",data-dismiss="modal") Close
   div.panel.panel-default
@@ -70,9 +70,9 @@ block content
         h1(style="display:inline-block") Bitzo's Chat Room
       div.personInfo.pull-right
         a.userAvator(ng-click="showPersonInfo()" href="")
-          img.img-circle(src="{{personInfo.avatar}}")
+          img.img-circle(src="./images/avatar.jpg")
 
-        h4 {{personInfo.username}}
+        h4 bitzo
         br
         br
         button.btn.btn-primary(ng-click="logout()") 退出&nbsp;
@@ -82,39 +82,34 @@ block content
         div.panel-heading
           h4 好友列表
         div.panel-body.pre-scrollable(style="min-height:500px")
-          strong {{notice}}
+          strong notice
           div.friends(ng-repeat="x in friendlist")
-            img.img-circle(src="{{x.avatar}}")
+            img.img-circle(src="./images/avatar.jpg")
             div.info
-              strong {{x.FName}}
+              strong bitzo
               button.btn.btn-sm.btn-danger(ng-click="deleteFriend($index, x.friendID)") 删除好友&nbsp;
                 i.glyphicon.glyphicon-remove
       div.panel.panel-success(style="width:68%;float:left;")
         div.panel-heading
-          h4 {{chatInfo.chatStatus}}
+          h4 chatStatus
         div.panel-body.chatArea(style="height:500px;padding: 5px;")
           div.chatlog.pre-scrollable(id="chatlog")
             div.log(ng-repeat="x in chatlogs track by $index")
-              b(ng-style="{color: x.isPerson? '#E9533F' : '#2C2B92'}") {{x.name}} {{x.time}}
-              p {{x.content}}
+              b(ng-style="{color: x.isPerson? '#E9533F' : '#2C2B92'}") bitzo 12月03日19:20:09
+              p hhhh
 
           div.friendInfo
-            img.img-rounded(src='{{chatInfo.avatar}}')
-            strong {{chatInfo.userName}}
+            img.img-rounded(src='./images/avatar.jpg')
+            strong bitzo
             button.btn.btn-primary(ng-click="addFriend(chatInfo)" ng-disabled="chatInfo.isFriend") 添加好友&nbsp;
               i.glyphicon.glyphicon-user
-            button.btn.btn-danger(id="matchSatus" ng-disabled="chatInfo.matchStatus" ng-click="startMatch()") {{chatInfo.matchMsg}}&nbsp;
+            button.btn.btn-danger(id="matchSatus" ng-disabled="chatInfo.matchStatus" ng-click="startMatch()") matchMsg&nbsp;
               i.glyphicon.glyphicon-refresh
           div.charPerson
-            img.img-rounded(src='{{personInfo.avatar}}')
+            img.img-rounded(src='./images/avatar.jpg')
             br
-            strong {{personInfo.username}}
+            strong bitzo
           div.chatMsg
             textarea.form-control(rows='5' style="resize:none" name='msg' ng-model="message")
             button.btn.btn-sm.btn-info.pull-right(ng-click="sendMessage(message)" ng-disabled="chatInfo.sendMsg") 发送&nbsp;
               i.glyphicon.glyphicon-send
-
-
-
-
-
