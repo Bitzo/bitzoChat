@@ -16,6 +16,8 @@
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.3.0",
     "koa-static": "^4.0.2",
-    "koa-views": "^6.1.2"
+    "koa-views": "^6.1.2",
+    "mysql": "^2.15.0",
+    "sequelize": "^4.26.0"
   }
 }
