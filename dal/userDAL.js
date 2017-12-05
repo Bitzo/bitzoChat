@@ -36,4 +36,19 @@ userDAL.addUser = async (userInfo) => {
   }
 };
 
+userDAL.queryUsers = async (userInfo) => {
+  try {
+    const users = await User.findAll({
+      where: userInfo,
+    });
+    users.forEach((user) => {
+      console.log(`Query Users: ${user}`);
+    });
+    return users;
+  } catch (err) {
+    console.log(`Query Users Error: ${err}`);
+    return false;
+  }
+};
+
 module.exports = userDAL;
