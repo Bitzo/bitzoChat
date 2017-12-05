@@ -1,5 +1,5 @@
 const Router = require('koa-router');
-const usersRouter = require('./api/users');
+const apiRouter = require('./api/index');
 
 const router = new Router();
 
@@ -27,6 +27,6 @@ router.get('/register', (ctx) => {
   });
 });
 
-router.use('/api', usersRouter.routes());
+router.use('/api', apiRouter.routes());
 
 module.exports = router;

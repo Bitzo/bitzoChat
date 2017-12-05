@@ -29,7 +29,8 @@ userDAL.addUser = async (userInfo) => {
     });
 
     console.log(`Created User: ${JSON.stringify(u)}`);
-    return true;
+    u.password = '';
+    return u;
   } catch (err) {
     console.log(`Created User Failed: ${err}`);
     return false;
@@ -40,6 +41,7 @@ userDAL.queryUsers = async (userInfo) => {
   try {
     const users = await User.findAll({
       where: userInfo,
+      attributes: ['id', 'username', 'gender', 'descrption', 'isActive'],
     });
     users.forEach((user) => {
       console.log(`Query Users: ${user}`);

@@ -14,7 +14,7 @@ a {
 
 #all{
   margin: 0px auto;
-  min-width: 760px;
+  min-width: 800px;
   width: 55%;
   height: auto;
   padding-bottom: 10px;
@@ -201,4 +201,10 @@ a {
   color: red;
   font-family: monospace;
   font-weight: normal;
+}
+
+.errorPage {
+  width: auto;
+  text-align: center;
+  margin: auto;
 }

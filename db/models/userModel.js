@@ -6,10 +6,15 @@ const user = sequelize.define('user', {
     type: Sequelize.INTEGER(11),
     primaryKey: true,
     unique: true,
+    autoIncrement: true,
   },
   username: {
     type: Sequelize.STRING(20),
     allowNull: false,
+    unique: true,
+    validate: {
+      len: [3, 20],
+    },
   },
   password: {
     type: Sequelize.STRING(100),
@@ -32,7 +37,7 @@ const user = sequelize.define('user', {
   },
   descrption: {
     type: Sequelize.STRING(50),
-    allowNull: false,
+    allowNull: true,
   },
   isActive: {
     type: Sequelize.BOOLEAN,
