@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const userService = require('../../service/userService');
 const dv = require('../../utils/dataValidator');
+const crypt = require('../../utils/encrypt');
 
 const router = new Router();
 
@@ -42,9 +43,9 @@ router.post('/', async (ctx) => {
     password,
   };
 
-  for (const key in userInfo) {
-    if (dv.checkParameters(userInfo[key])) {
-      console.log(`${key}: ${userInfo[key]}`);
+  for (const i in userInfo) {
+    if (dv.checkParameters(userInfo[i])) {
+      console.log(`${i}: ${userInfo[i]}`);
       ctx.status = 400;
       ctx.body = {
         status: 400,
@@ -54,6 +55,11 @@ router.post('/', async (ctx) => {
       return;
     }
   }
+
+  const { encrypted, key } = crypt.encrypt(password);
+
+  userInfo.password = encrypted;
+  userInfo.key = key;
 
   let result = await userService.queryUsers({ username });
 

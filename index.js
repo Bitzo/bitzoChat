@@ -26,7 +26,6 @@ app.use(router.routes());
 // handle 404 page
 app.use(async (ctx) => {
   ctx.response.status = 404;
-  // ctx.body = 'Oops, Not Found!';
   await ctx.render('error', {
     error: ctx.error,
   });

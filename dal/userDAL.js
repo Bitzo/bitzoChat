@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const User = require('../db/models/userModel');
 
 const userDAL = {};
@@ -20,17 +21,10 @@ userDAL.addUser = async (userInfo) => {
 
   // if use async/await, use try/catch handle error.
   try {
-    const u = await User.create({
-      username: userInfo.username,
-      password: userInfo.password,
-      gender: userInfo.gender,
-      descrption: userInfo.descrption,
-      isActive: userInfo.isActive,
-    });
-
+    let u = await User.create(userInfo);
     console.log(`Created User: ${JSON.stringify(u)}`);
-    u.password = '';
-    return u;
+    u = JSON.parse(JSON.stringify(u));
+    return _.omit(u, ['key', 'password']);
   } catch (err) {
     console.log(`Created User Failed: ${err}`);
     return false;
