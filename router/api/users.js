@@ -63,7 +63,7 @@ router.post('/', async (ctx) => {
 
   let result = await userService.queryUsers({ username });
 
-  if (result.length) {
+  if (!result || result.length) {
     ctx.status = 400;
     ctx.body = {
       status: 400,
