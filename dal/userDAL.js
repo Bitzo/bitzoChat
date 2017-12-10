@@ -4,22 +4,6 @@ const User = require('../db/models/userModel');
 const userDAL = {};
 
 userDAL.addUser = async (userInfo) => {
-  // User
-  //   .create({
-  //     username: userInfo.username,
-  //     password: userInfo.password,
-  //     gender: userInfo.gender,
-  //     descrption: userInfo.descrption,
-  //     isActive: userInfo.isActive,
-  //   })
-  //   .then((p) => {
-  //     console.log(`Created User: ${JSON.stringify(p)}`);
-  //   })
-  //   .catch((err) => {
-  //     console.log(`Created User Failed: ${err}`);
-  //   });
-
-  // if use async/await, use try/catch handle error.
   try {
     let u = await User.create(userInfo);
     console.log(`Created User: ${JSON.stringify(u)}`);
@@ -33,13 +17,13 @@ userDAL.addUser = async (userInfo) => {
 
 userDAL.queryUsers = async (userInfo) => {
   try {
-    const users = await User.findAll({
+    let users = await User.findAll({
       where: userInfo,
-      attributes: ['id', 'username', 'gender', 'descrption', 'isActive'],
     });
     users.forEach((user) => {
       console.log(`Query Users: ${user}`);
     });
+    users = JSON.parse(JSON.stringify(users));
     return users;
   } catch (err) {
     console.log(`Query Users Error: ${err}`);

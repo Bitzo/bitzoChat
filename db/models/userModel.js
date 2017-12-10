@@ -20,6 +20,10 @@ const user = sequelize.define('user', {
     type: Sequelize.STRING(100),
     allowNull: false,
   },
+  key: {
+    type: Sequelize.STRING(20),
+    allowNull: false,
+  },
   gender: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
