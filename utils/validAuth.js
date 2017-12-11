@@ -7,7 +7,7 @@ function getJWT(username) {
       username,
     },
   }, config.secret, {
-    expiresIn: '3s',
+    expiresIn: '30m',
   });
 }
 

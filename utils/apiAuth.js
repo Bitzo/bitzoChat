@@ -2,26 +2,32 @@ const validAuth = require('./validAuth');
 const _ = require('lodash');
 
 function urlPass(method, url) {
-  if (_.upperCase(method) === 'POST' && _.lowerCase(url) === '/api/register') return true;
-  if (_.upperCase(method) === 'POST' && _.lowerCase(url) === '/api/login') return true;
+  console.log(method, url);
+  if (_.toUpper(method) === 'POST' && _.toLower(url) === '/api/register') return true;
+  if (_.toUpper(method) === 'POST' && _.toLower(url) === '/api/login') return true;
   return false;
 }
 
-module.exports = (ctx, next) => {
-  if (urlPass(ctx.method, ctx.url)) {
-    next();
-  } else {
-    try {
-      validAuth.verify(ctx.token);
-    } catch (err) {
-      console.log(err);
-      ctx.body = {
-        isSuccess: false,
-        status: 400,
-        msg: '签名失效,请重试',
-      };
-      ctx.status = 400;
-    }
-    next();
+function tokenCheck(ctx) {
+  if (urlPass(ctx.request.method, ctx.url)) {
+    return {
+      isSuccess: true,
+    };
   }
+  try {
+    const token = ctx.request.body.token || ctx.query.token || '';
+    validAuth.verifyJWT(token);
+    return {
+      isSuccess: true,
+    };
+  } catch (err) {
+    return {
+      isSuccess: false,
+      msg: err.message,
+    };
+  }
+}
+
+module.exports = {
+  tokenCheck,
 };

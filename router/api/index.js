@@ -3,6 +3,7 @@ const usersRouter = require('./users');
 const dv = require('../../utils/dataValidator');
 const crypt = require('../../utils/encrypt');
 const userService = require('../../service/userService');
+const validAuth = require('../../utils/validAuth');
 
 const router = new Router();
 
@@ -86,13 +87,21 @@ router.post('/login', async (ctx) => {
   if (result && result.length === 1) {
     const decryptPwd = await crypt.decrypt(result[0].password, result[0].key);
     if (decryptPwd === password) {
+      const token = validAuth.getJWT(result[0].username);
       ctx.body = {
         status: 200,
         isSuccess: true,
         msg: '登录成功',
+        token,
       };
       return;
     }
+    ctx.status = 400;
+    ctx.body = {
+      status: 400,
+      isSuccess: false,
+      msg: '登录失败',
+    };
   }
 
   ctx.status = 400;
