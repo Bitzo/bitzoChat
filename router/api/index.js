@@ -13,6 +13,18 @@ router.use('/users', usersRouter.routes());
 router.post('/register', async (ctx) => {
   const { username, password, enPassword } = ctx.request.body;
 
+  let result = await userService.queryUsers({ username });
+
+  if (!result || result.length) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 400,
+      isSuccess: false,
+      msg: '注册失败, 用户名重复。',
+    };
+    return;
+  }
+
   if (password !== enPassword) {
     ctx.status = 400;
     ctx.body = {
@@ -45,18 +57,6 @@ router.post('/register', async (ctx) => {
 
   userInfo.password = encrypted;
   userInfo.key = key;
-
-  let result = await userService.queryUsers({ username });
-
-  if (!result || result.length) {
-    ctx.status = 400;
-    ctx.body = {
-      status: 400,
-      isSuccess: false,
-      msg: '注册失败, 用户名重复。',
-    };
-    return;
-  }
 
   result = await userService.addUser(userInfo);
 
