@@ -51,7 +51,7 @@ router.put('/', async (ctx) => {
   } = ctx.request.body || '';
 
   const userInfo = {
-    id,
+    id: _.toNumber(id),
     username,
     gender,
     birthday,
@@ -89,7 +89,9 @@ router.put('/', async (ctx) => {
   result = await userService.queryUsers({ username });
   if (result && result.length > 0) {
     for (const i in result) {
-      if (result[i].id !== id) {
+      console.log(result[i].id, userInfo.id);
+      console.log(result[i].id !== userInfo.id);
+      if (result[i].id !== userInfo.id) {
         ctx.status = 400;
         ctx.body = {
           status: 400,
