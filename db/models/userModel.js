@@ -16,6 +16,11 @@ const user = sequelize.define('user', {
       len: [3, 20],
     },
   },
+  email: {
+    type: Sequelize.STRING(50),
+    allowNull: true,
+    isEmail: true,
+  },
   password: {
     type: Sequelize.STRING(100),
     allowNull: false,
@@ -39,6 +44,10 @@ const user = sequelize.define('user', {
       this.setDataValue('gender', g);
     },
   },
+  birthday: {
+    type: Sequelize.DATE,
+    allowNull: true,
+  },
   descrption: {
     type: Sequelize.STRING(50),
     allowNull: true,
@@ -47,6 +56,11 @@ const user = sequelize.define('user', {
     type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: 1,
+  },
+  avatar: {
+    type: Sequelize.CHAR(100),
+    allowNull: true,
+    defaultValue: '/img/avatarDefault.jpg',
   },
 }, {
   timestamps: false,

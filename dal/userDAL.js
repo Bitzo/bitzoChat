@@ -20,13 +20,28 @@ userDAL.queryUsers = async (userInfo) => {
     let users = await User.findAll({
       where: userInfo,
     });
-    users.forEach((user) => {
-      console.log(`Query Users: ${user}`);
-    });
     users = JSON.parse(JSON.stringify(users));
     return users;
   } catch (err) {
     console.log(`Query Users Error: ${err}`);
+    return false;
+  }
+};
+
+userDAL.updateUser = async (userInfo) => {
+  try {
+    let result = await User.update(
+      _.omit(userInfo, 'id'),
+      {
+        where: {
+          id: userInfo.id,
+        },
+      },
+    );
+    [result] = result;
+    return result;
+  } catch (err) {
+    console.log(`Update User Error: ${err}`);
     return false;
   }
 };

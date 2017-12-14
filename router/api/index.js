@@ -18,7 +18,7 @@ router.post('/register', async (ctx) => {
     password,
   };
 
-  const err = dv.isParamValid(userInfo);
+  const err = dv.isParamsInvalid(userInfo);
 
   if (err) {
     ctx.status = 400;
@@ -81,7 +81,7 @@ router.post('/register', async (ctx) => {
 router.post('/login', async (ctx) => {
   const { username, password } = ctx.request.body;
 
-  const err = dv.isParamValid({ username, password });
+  const err = dv.isParamsInvalid({ username, password });
 
   if (err) {
     ctx.status = 400;
