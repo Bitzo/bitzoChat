@@ -9,7 +9,9 @@ function urlPass(method, url) {
 }
 
 function tokenCheck(ctx) {
-  if (urlPass(ctx.request.method, ctx.url)) {
+  let { method, url } = ctx.request;
+  url = url.split('?')[0];
+  if (urlPass(method, url)) {
     return {
       isSuccess: true,
     };

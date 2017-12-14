@@ -13,6 +13,23 @@ router.use('/users', usersRouter.routes());
 router.post('/register', async (ctx) => {
   const { username, password, enPassword } = ctx.request.body;
 
+  const userInfo = {
+    username,
+    password,
+  };
+
+  const err = dv.isParamValid(userInfo);
+
+  if (err) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 400,
+      msg: `{ ${err} } 参数填写不正确`,
+      isSuccess: false,
+    };
+    return;
+  }
+
   let result = await userService.queryUsers({ username });
 
   if (!result || result.length) {
@@ -33,24 +50,6 @@ router.post('/register', async (ctx) => {
       msg: '密码不一致',
     };
     return;
-  }
-
-  const userInfo = {
-    username,
-    password,
-  };
-
-  for (const i in userInfo) {
-    if (dv.checkParameters(userInfo[i])) {
-      console.log(`${i}: ${userInfo[i]}`);
-      ctx.status = 400;
-      ctx.body = {
-        status: 400,
-        isSuccess: false,
-        msg: '参数填写不正确',
-      };
-      return;
-    }
   }
 
   const { encrypted, key } = crypt.encrypt(password);
@@ -81,6 +80,18 @@ router.post('/register', async (ctx) => {
 // user login
 router.post('/login', async (ctx) => {
   const { username, password } = ctx.request.body;
+
+  const err = dv.isParamValid({ username, password });
+
+  if (err) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 400,
+      isSuccess: false,
+      msg: `{ ${err} } 参数填写错误`,
+    };
+    return;
+  }
 
   const result = await userService.queryUsers({ username });
 

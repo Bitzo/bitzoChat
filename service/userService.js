@@ -4,9 +4,6 @@ const _ = require('lodash');
 const userService = {};
 
 userService.addUser = async (userInfo) => {
-  // 检查userinfo， 确保每个属性都是合法的符合预期的
-  // 不过由于使用了sequelize
-  // 似乎也可以把这种值判断直接写进model里，通过组件自动处理 ？
   const info = {};
   _.forIn(userInfo, (value, key) => {
     if (!(value === '' || value === null || value === undefined)) {
