@@ -93,12 +93,16 @@ router.post('/login', async (ctx) => {
     return;
   }
 
-  const result = await userService.queryUsers({ username });
+  let result = await userService.queryUsers({ username });
 
   if (result && result.length === 1) {
-    const decryptPwd = await crypt.decrypt(result[0].password, result[0].key);
+    [result] = result;
+    const decryptPwd = await crypt.decrypt(result.password, result.key);
     if (decryptPwd === password) {
-      const token = validAuth.getJWT(result[0].username);
+      const token = validAuth.getJWT({
+        id: result.id,
+        username: result.username,
+      });
       ctx.body = {
         status: 200,
         isSuccess: true,

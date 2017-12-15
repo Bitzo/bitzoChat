@@ -9,8 +9,9 @@ function urlPass(method, url) {
 }
 
 function tokenCheck(ctx) {
-  let { method, url } = ctx.request;
-  url = url.split('?')[0];
+  const { method } = ctx.request;
+  let { url } = ctx.request;
+  [url] = url.split('?');
   if (urlPass(method, url)) {
     return {
       isSuccess: true,
@@ -18,7 +19,8 @@ function tokenCheck(ctx) {
   }
   try {
     const token = ctx.request.body.token || ctx.query.token || '';
-    validAuth.verifyJWT(token);
+    const tokenDecode = validAuth.verifyJWT(token);
+    ctx.token = tokenDecode;
     return {
       isSuccess: true,
     };

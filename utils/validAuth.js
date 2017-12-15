@@ -1,11 +1,9 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 
-function getJWT(username) {
+function getJWT(userInfo) {
   return jwt.sign({
-    data: {
-      username,
-    },
+    data: userInfo,
   }, config.secret, {
     expiresIn: '30m',
   });
