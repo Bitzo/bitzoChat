@@ -9,10 +9,20 @@ const router = new Router();
 router.get('/', async (ctx) => {
   const { id, username, isActive } = ctx.query || '';
   const userInfo = {
-    id,
+    id: _.toNumber(id),
     username,
     isActive,
   };
+
+  if (userInfo.id !== ctx.token.id) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 400,
+      isSuccess: false,
+      msg: '权限不足',
+    };
+    return;
+  }
 
   let users = await userService.queryUsers(userInfo);
 
@@ -58,6 +68,16 @@ router.put('/', async (ctx) => {
     descrption,
   };
 
+  if (userInfo.id !== ctx.token.id) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 400,
+      isSuccess: false,
+      msg: '权限不足',
+    };
+    return;
+  }
+
   const err = dv.isParamsInvalid({ id, username, gender });
 
   if (err) {
@@ -89,8 +109,6 @@ router.put('/', async (ctx) => {
   result = await userService.queryUsers({ username });
   if (result && result.length > 0) {
     for (const i in result) {
-      console.log(result[i].id, userInfo.id);
-      console.log(result[i].id !== userInfo.id);
       if (result[i].id !== userInfo.id) {
         ctx.status = 400;
         ctx.body = {

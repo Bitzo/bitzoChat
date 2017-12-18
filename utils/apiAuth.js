@@ -20,7 +20,7 @@ function tokenCheck(ctx) {
   try {
     const token = ctx.request.body.token || ctx.query.token || '';
     const tokenDecode = validAuth.verifyJWT(token);
-    ctx.token = tokenDecode;
+    ctx.token = tokenDecode.data;
     return {
       isSuccess: true,
     };
