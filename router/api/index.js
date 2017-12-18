@@ -127,4 +127,67 @@ router.post('/login', async (ctx) => {
   };
 });
 
+router.post('/password', async (ctx) => {
+  const { password, enPassword } = ctx.request.body;
+  const { id } = ctx.token;
+  let result = await dv.isParamsInvalid({ password, enPassword });
+
+  if (result) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 400,
+      isSuccess: false,
+      msg: `{ ${result} } 参数填写错误`,
+    };
+    return;
+  }
+
+  if (password !== enPassword) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 400,
+      isSuccess: false,
+      msg: '密码不一致',
+    };
+    return;
+  }
+
+  result = await userService.queryUsers({ id });
+
+  if (!result || result.length === 0) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 400,
+      isSuccess: false,
+      msg: '用户不存在',
+    };
+    return;
+  }
+
+  const { encrypted, key } = await crypt.encrypt(password);
+
+  result = await userService.updateUser({
+    password: encrypted,
+    key,
+    id,
+  });
+
+  if (result === false) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 400,
+      isSuccess: false,
+      msg: '用户信息更新失败',
+    };
+    return;
+  }
+
+  ctx.status = 200;
+  ctx.body = {
+    status: 200,
+    isSuccess: true,
+    msg: '修改成功',
+  };
+});
+
 module.exports = router;
