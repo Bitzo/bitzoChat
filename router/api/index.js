@@ -9,14 +9,35 @@ const router = new Router();
 
 router.use('/users', usersRouter.routes());
 
-// user register
+/**
+ * @api {POST} /api/register 用户注册-普通
+ * @apiName userRegister
+ * @apiGroup base
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} username 用户名
+ * @apiParam {String} password 密码
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": 200,
+ *       "isSuccess": true,
+ *       "msg": "注册成功"
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "status": 400,
+ *       "isSuccess": false,
+ *       "msg": "errorMsg"
+ *     }
+ */
 router.post('/register', async (ctx) => {
-  const { username, password, enPassword } = ctx.request.body;
+  const { username, password } = ctx.request.body;
 
-  const userInfo = {
-    username,
-    password,
-  };
+  const userInfo = { username, password };
 
   const err = dv.isParamsInvalid(userInfo);
 
@@ -24,8 +45,8 @@ router.post('/register', async (ctx) => {
     ctx.status = 400;
     ctx.body = {
       status: 400,
-      msg: `{ ${err} } 参数填写不正确`,
       isSuccess: false,
+      msg: `{ ${err} } 参数填写不正确`,
     };
     return;
   }
@@ -38,16 +59,6 @@ router.post('/register', async (ctx) => {
       status: 400,
       isSuccess: false,
       msg: '注册失败, 用户名重复。',
-    };
-    return;
-  }
-
-  if (password !== enPassword) {
-    ctx.status = 400;
-    ctx.body = {
-      status: 400,
-      isSuccess: false,
-      msg: '密码不一致',
     };
     return;
   }
@@ -65,7 +76,6 @@ router.post('/register', async (ctx) => {
       status: 200,
       isSuccess: true,
       msg: '注册成功',
-      data: result,
     };
   } else {
     ctx.status = 400;
@@ -77,7 +87,32 @@ router.post('/register', async (ctx) => {
   }
 });
 
-// user login
+/**
+ * @api {POST} /api/login 用户登录
+ * @apiName userLogin
+ * @apiGroup base
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} username 用户名
+ * @apiParam {String} password 密码
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": 200,
+ *       "isSuccess": true,
+ *       "msg": "登录成功"，
+ *       ”token“: "akasddsaduashdawohowho.sdfasfds.sfdasfs"
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "status": 400,
+ *       "isSuccess": false,
+ *       "msg": "errorMsg"
+ *     }
+ */
 router.post('/login', async (ctx) => {
   const { username, password } = ctx.request.body;
 
@@ -127,6 +162,40 @@ router.post('/login', async (ctx) => {
   };
 });
 
+/**
+ * @api {POST} /api/password 修改密码
+ * @apiName chagePwd
+ * @apiGroup base
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} token token
+ * @apiParam {String} username 用户名
+ * @apiParam {String} password 密码
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": 200,
+ *       "isSuccess": true,
+ *       "msg": "修改成功"，
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "status": 400,
+ *       "isSuccess": false,
+ *       "msg": "errorMsg"
+ *     }
+ *
+ * @apiErrorExample Forbidden:
+ *     HTTP/1.1 403 Forbidden
+ *     {
+ *       "status": 403,
+ *       "isSuccess": false,
+ *       "msg": "errorMsg"
+ *     }
+ */
 router.post('/password', async (ctx) => {
   const { password, enPassword } = ctx.request.body;
   const { id } = ctx.token;

@@ -6,8 +6,8 @@ const config = {
     host: '127.0.0.1',
     port: 3306,
     user: 'bitzo',
-    password: '123456',
-    database: 'temp',
+    password: 'bitzochat',
+    database: 'bitzochat',
   },
   // redisConfig
   redis: {

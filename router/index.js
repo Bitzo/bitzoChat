@@ -28,12 +28,17 @@ router.get('/register', (ctx) => {
   });
 });
 
+
+/**
+ * 后端接口请求鉴权
+ * token无效或错误返回403
+ */
 router.all('/api/*', async (ctx, next) => {
   const result = await apiAuth.tokenCheck(ctx);
   if (result && !result.isSuccess) {
-    ctx.status = 400;
+    ctx.status = 403;
     ctx.body = {
-      status: 400,
+      status: 403,
       isSuccess: false,
       msg: result.msg,
     };
