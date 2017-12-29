@@ -1,6 +1,12 @@
 const validAuth = require('./validAuth');
 const _ = require('lodash');
 
+/**
+ * 判断请求是否需要进行鉴权处理
+ * @param {String} method 方法
+ * @param {String} url 请求地址
+ * @return {Boolean} true/false
+ */
 function urlPass(method, url) {
   console.log(method, url);
   if (_.toUpper(method) === 'POST' && _.toLower(url) === '/api/register') return true;
@@ -8,6 +14,11 @@ function urlPass(method, url) {
   return false;
 }
 
+/**
+ * 接口鉴权
+ * @param {Object} ctx
+ * @return {Object} {isSuccess： true， msg: ""}
+ */
 function tokenCheck(ctx) {
   const { method } = ctx.request;
   let { url } = ctx.request;
