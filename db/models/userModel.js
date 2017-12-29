@@ -58,12 +58,15 @@ const user = sequelize.define('user', {
     defaultValue: 1,
   },
   avatar: {
-    type: Sequelize.CHAR(100),
+    type: Sequelize.STRING(100),
     allowNull: true,
     defaultValue: '/img/avatarDefault.jpg',
   },
+  createTime: Sequelize.DATE,
+  updateTime: Sequelize.DATE,
 }, {
-  timestamps: false,
+  createdAt: 'createTime',
+  updatedAt: 'updateTIme',
 });
 
 module.exports = user;

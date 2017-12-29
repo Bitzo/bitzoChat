@@ -1,9 +1,7 @@
 const _ = require('lodash');
 const User = require('../db/models/userModel');
 
-const userDAL = {};
-
-userDAL.addUser = async (userInfo) => {
+async function addUser(userInfo) {
   try {
     let u = await User.create(userInfo);
     console.log(`Created User: ${JSON.stringify(u)}`);
@@ -13,9 +11,9 @@ userDAL.addUser = async (userInfo) => {
     console.log(`Created User Failed: ${err}`);
     return false;
   }
-};
+}
 
-userDAL.queryUsers = async (userInfo) => {
+async function queryUsers(userInfo) {
   try {
     let users = await User.findAll({
       where: userInfo,
@@ -26,9 +24,9 @@ userDAL.queryUsers = async (userInfo) => {
     console.log(`Query Users Error: ${err}`);
     return false;
   }
-};
+}
 
-userDAL.updateUser = async (userInfo) => {
+async function updateUser(userInfo) {
   try {
     let result = await User.update(
       _.omit(userInfo, 'id'),
@@ -44,6 +42,10 @@ userDAL.updateUser = async (userInfo) => {
     console.log(`Update User Error: ${err}`);
     return false;
   }
-};
+}
 
-module.exports = userDAL;
+module.exports = {
+  addUser,
+  queryUsers,
+  updateUser,
+};

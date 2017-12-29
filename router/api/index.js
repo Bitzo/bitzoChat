@@ -52,7 +52,6 @@ router.post('/register', async (ctx) => {
   }
 
   let result = await userService.queryUsers({ username });
-
   if (!result || result.length) {
     ctx.status = 400;
     ctx.body = {
@@ -197,9 +196,9 @@ router.post('/login', async (ctx) => {
  *     }
  */
 router.post('/password', async (ctx) => {
-  const { password, enPassword } = ctx.request.body;
+  const { password } = ctx.request.body;
   const { id } = ctx.token;
-  let result = await dv.isParamsInvalid({ password, enPassword });
+  let result = await dv.isParamsInvalid({ password });
 
   if (result) {
     ctx.status = 400;
@@ -207,16 +206,6 @@ router.post('/password', async (ctx) => {
       status: 400,
       isSuccess: false,
       msg: `{ ${result} } 参数填写错误`,
-    };
-    return;
-  }
-
-  if (password !== enPassword) {
-    ctx.status = 400;
-    ctx.body = {
-      status: 400,
-      isSuccess: false,
-      msg: '密码不一致',
     };
     return;
   }
