@@ -4,9 +4,9 @@
 
 nodejs + websocket  实现的随机聊天 *(暂定以随机为主)* 程序。
 
-目前是改用koa框架重写,原先的版本时express的(branch: master),不过因为是边学边做,所以代码结构不太好.
+目前是改用koa框架重写,原先的版本是express的([branch: express](https://github.com/Bitzo/bitzoChat/tree/express)),不过因为是边学边做,所以代码结构不太好.
 
-另外前端无人帮忙,只能时边学边写,还没定好用什么框架.
+另外前端无人帮忙,只能是边学边写,还没定好用什么框架.
 
 ## 目前进展
 
