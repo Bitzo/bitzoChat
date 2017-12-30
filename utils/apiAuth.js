@@ -17,6 +17,8 @@ function urlPass(method, url) {
 /**
  * 接口鉴权
  * @param {Object} ctx
+ * @param {string} ctx.method 方法
+ * @param {string} ctx.url 请求地址
  * @return {Object} {isSuccess： true， msg: ""}
  */
 function tokenCheck(ctx) {
