@@ -1,18 +1,23 @@
 doctype html
 html
   head
-    title="Bitzo‘s chat Room"
+    title="Bitzo's chat Room"
     meta(charset='utf-8')
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
-    //link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap-theme.min.css')
+    //- link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
     link(rel='icon', href='/images/favicon.png')
+    link(href="https://cdn.bootcss.com/flat-ui/2.3.0/css/flat-ui.min.css" rel="stylesheet")
+    link(href="https://cdn.bootcss.com/flat-ui/2.3.0/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet")
+    link(rel='stylesheet', href='/stylesheets/style.css')
     script(src="/bower_components/jquery/dist/jquery.min.js")
     script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
-
+    script(src="/bower_components/vue/dist/vue.js")
+    
+    
   body
-    block content
-
+    div#app
+      block content
+    script(src="/javascripts/index.js")
+    
   div.footer
       div.copyright
         p Copyright &copy; 2017 Bitzo's ChatRoom&nbsp&nbsp

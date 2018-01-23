@@ -28,6 +28,7 @@ router.get('/register', (ctx) => {
   });
 });
 
+router.get('/apidoc', ctx => ctx.render('index.html'));
 
 /**
  * 后端接口请求鉴权
