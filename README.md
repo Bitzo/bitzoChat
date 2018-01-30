@@ -37,3 +37,8 @@ nodejs + websocket  实现的随机聊天 *(暂定以随机为主)* 程序。
 3. npm start
 
 4. 访问 localhost:3000
+
+<details>
+<summary>测试</summary>
+![](./public/images/avatar.jpg)
+</details>
